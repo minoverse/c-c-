@@ -1,0 +1,396 @@
+#include <iostream>
+
+int main(){
+    std::cout << "Hello, World!" << std::endl; // endl is end line like '\n'
+}
+
+name space - to avoid name confilct
+           -function,class,etc..
+   structure ->  namespace::function()
+
+
+//
+using
+
+
+#include <iostream>
+using namespace std;
+
+int main(){
+    cout << "Hello, World!" << endl; // endl is end line like '\n'
+}
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a <<"+" << b << "=" << a+b <<endl;// a+b == a+b
+
+}
+#include <iostream>
+#include<String>
+
+using namespace std;
+
+int main() {
+    string str;
+    str ="Hello";  // i dont have to assgin length or size
+    cout << str <<endl;
+}
+
+#include <iostream>
+#include<String>
+
+using namespace std;
+int main() {
+    string name;
+
+    cout << "input name";
+    cin >> name;
+
+    string message = "Hello" + name + "Mr";
+    cout << message <<endl;  // c++ cna use + in string.
+
+}
+//basic grammar in c++
+#include <iostream>
+
+using namespace std;
+int main() {
+    int a(10); // int a =10; declare expressio nc++ style
+    int b(a +5); // int b =a+5;
+}
+//range base for roop 
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    int arr[10] = {3, 1, 2, 2, 2, ,4 ,5 ,6 ,7, 12};
+
+    for (int n :arr) {
+        cout << n <<endl; //3, 1, 2, 2, 2, ,4 ,5 ,6 ,7, 12
+        n++; // doesnt change anything becuase n ==arr so anyway arr value doesnt change
+    }
+}
+//reference variable
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    //r-value :can't modify
+    //l-value :can modify
+    int a(5);
+    int &p =a;
+    p = 10; //a becomes 10
+    cout << p <<endl; //10
+     cout << a <<endl; //10
+
+}
+
+int &referenceVariable = originalVariable; // Initialization
+No Memory Allocation:
+
+Unlike pointers, references do not allocate additional memory. They directly refer to the memory location of the original variable.
+Use in Functions:
+
+References are often used in function parameters to avoid unnecessary copying of data.
+ This can improve performance and is a key feature of C++.
+
+void modifyValue(int &ref) {
+    ref = 100;
+}
+
+// Usage
+modifyValue(originalVariable);
+/*
+int sum = 3 + 4;
+const int &refToTemp = sum + 5;
+In the first line, int sum = 3 + 4; creates a variable sum and initializes it with the result of the expression 3 + 4, which is 7.
+
+In the second line, const int &refToTemp = sum + 5;, we're creating a reference refToTemp that refers to a temporary object. Here, sum + 5 is an expression that results in a temporary object holding the value 12 (7 + 5).
+
+Now, let's delve into why we use a const reference in this context:
+
+Temporary Objects:
+
+When you perform operations like sum + 5, a temporary object is created to hold the result of that expression. This temporary object has a limited scope and is automatically managed by the compiler.
+Const Reference:
+
+When you create a reference to a temporary object, using const is crucial because it ensures that you cannot modify the temporary object through the reference. This is because temporary objects often represent rvalues (values that are not assignable), and making the reference const enforces this immutability.
+cpp
+Copy code
+const int &refToTemp = sum + 5;
+Without the const, you might be tempted to modify the temporary object through the reference, which could lead to unexpected behavior and is generally not allowed.
+
+Lifetime of Temporary Objects:
+
+The lifetime of a temporary object is tied to the expression it appears in. In this case, the temporary object is created for the duration of the expression sum + 5. Once that expression is evaluated, the temporary object is no longer guaranteed to exist.
+Using a const reference is a safety measure because it prevents attempts to modify a temporary object that might have been destroyed or is in a state where modifications are undefined.
+
+In summary, creating a reference to a temporary object can be useful in certain scenarios, but using a const reference is essential to ensure that you don't accidentally modify temporary objects that might have a limited lifetime or be in an immutable state.
+*/
+
+//
+<<: OPERATOR
+
+Output Formatting
+Manipulator - kind of customizing.
+setw()
+setfill()
+setprecision()
+size_t - same meaning with unsigned t
+Input Stream
+char firstNmae[20];
+cin >> firstName;
+cout << "TODAY ISTUDY: "<<fistName;
+scanf doesnt do bounds checking!!
+So dont use scanf
+cin also
+so setw( ) solves this prolem.
+
+stream state 
+eof == end of file
+
+discarding input
+clear() :return to stream as good state 
+ignore(): if it arrives end of file or set number then it stops
+cin.ignore(10) :throw 10characters
+cin.ignore(10,'\n'): throw 10characters but if it meets newline charcter then it stops directly
+cin.ignore(LLONG_MAX, '\n') :throw maximum number of characters but if meets newline character then it stops directly
+get() :before meeting newline character brinng all characters 
+       newline character still left in input stream
+getlint():before meeting newline character brinng all characters 
+       newline character is discarded in input stream
+
+booldatatype
+
+-TRUE ,FALSE can be used 
+
+Reference 
+-more safe way to use pointer 
+-alias 
+-can't be NULL 
+int & <name> = 
+-it should be declared during initialize
+declare means alias = variable 
+-Reference object can't be changred 
+void swap(int &num1, int &num2){
+    int tmp =num1;
+    num1 = num2;
+    num2 =tmp;
+}
+//
+일부코딩표준
+읽기전용매개변수는 상수참조로
+출력결과용 매개변수는 포인터로
+TryDivide(&a,b,c); // a is output b,c are input
+                   // but a can beNULL so use assert()
+                   // assert(a !=NULL);
+std::string class 
+it can
+substitute
+append
+
+concatination(easily sum of strings)
+relation operator is possible 
+> ,<, ==
+if(str1 >str2) // compare in dictornary order
+cout << firstname.size() <<endl;//size () function returns length of string
+                                //length() also same func
+c_str() //const char*
+        //it returns adress of start of string array like array pointer adress
+string line;
+cin >>line;
+const char* cline = line.c_str();
+acees to one character in string //same as C
+IN C++ header file <string.h> ==> <cstring>
+                    <stdio.h> ==><cstdio>
+//
+file input/output
+ifstream:file input
+ofstream:file output
+fstream:file input and output both
+we can use << >> manipulator to file stream
+ifstream fin; // make object
+fin.open("helloworld.txt"); //open for reading file 
+
+ofstream fout;
+fin.open("helloworld.txt");//open  for writing file
+
+fstream fs;
+fs.open("helloworld.txt"); //open for read and wrtie
+
+open() //each stream ahs open() method
+fin.open("helloworld.txt", ios_base::in | ios_base::binary);
+
+mode flags //name space :ios_base
+            // not every combination is works
+            in, out,ate,app,trunc,binary
+close() 
+ifstream fin;
+//...
+fin.close(); //if it is out of scope autimatically close 
+             // so close() o is not obigatory but prefferd
+//
+stream condition check
+fstream fs;
+fs.open("hello.txt");
+if (fs.is_open()){
+
+}
+//
+Read character one by one from file 
+ifstream fin;
+fin.open("Hello.txt");
+char character;
+while(true) {
+    fin.get(character);
+    if(fin.fail()){
+        break;
+    }
+    cout << character;
+}
+
+fin.close();
+
+//
+get(), getline() >> // it works same in any stram
+
+fin.get(character);
+
+fin.getline(firstname, 20); //it reads 20characters in file
+getline(fin,line)// it reads 1line from file
+
+fin >> word; //it reads 1word from file 
+
+//
+input wrong  cases 
+while (!fin.eof()){
+    fin >>number;
+    cout << number << endL;  // INPUT 100 CCC 300
+}                            // THEN IT PRINTS 100 100 100..INFINETLY
+how to ifx?
+jump to next separate character
+while (!fin.eof()) {
+    fin >>number;
+
+    if(fin.fail()){
+        fin.clear();
+        fin.ignore(LLONG_MAX, ' '); //IGNORE UNTIL MEET SPACE
+    }
+    else (
+        cout <<number <<endL;
+    
+    )
+}
+but if not space ' ', '\t' ?other separator?
+
+to fix we should read only numbers
+
+while (true){
+    fin >>number;
+    if(!fin.fail()){
+        cout <<number <<endL;
+        continue;
+    }
+}
+
+//when handling eof clear() location is important -> it could be trigeer infinity roop
+
+//reading binary file
+ifstream fin("studentrecodr.dat", ios_base::in |ios_base::binary);
+
+if (fin.is_open()) {
+    Record record ;//just make if structure Record 
+    fin.read((char*)&record,sizeof(Record));
+}
+fin.close();
+
+ifstrean::read()
+
+read(char*,streamsize)//streamsize is unsigned size
+
+ofstream fout("studentrecord.dat",ios_base::out | ios_base::binary);
+
+if(fout.is_open()){
+    char buffer[20] = "pope kim";
+    fout.write(buffer, 20);
+}
+
+fout.close();
+
+ofstream::write()
+write(const char*, streamsize)
+
+//searching in file
+fstream fs("helloworld.dat" ios_base::in |ios_base::out |ios_base::binary);
+if(fs.is_open()){
+    fs.seekp(20, ios_base::beg)//seekp is seek pointer beg is beggining
+    if(!fs.fail()){
+        //redirect from 21st 
+    }
+}
+
+fs.close();
+//seeking type
+absolute
+it goes specific location
+tellp() ,tellg() //using toreturn to rememberd location
+relative
+ex) move from end of file 5bite front
+searching direction
+ios_base::beg 
+ios_base::cur
+ios_base::end
+
+tellp()  : it gets a location of write pointer 
+ios::pos_type pos = fout.tellp();
+
+seekp
+fout.seekp(0); // absolute, move to first location
+fout.seekp(20, ios_base::cur); // relative, move to 20byte later from now location
+ >> dont use with getline()
+
+ //vector class
+ class vector
+ {
+
+    
+ }  //c++ basic access modifier is private
+
+ access modifier 
+ public :anybody can access 
+ protected : subclass can access 
+ private : Default access of members in a class is private
+
+making object 
+making memory in stack (fast)
+vector a;
+
+making memoery in heap(slow)
+vector *b = new vecotor();
+
+stack 
+simply move stack pointer 
+
+Vector addVector(const Vector &a, const Vector &b)
+{
+    Vector result;
+    result.mx = a.mX +b.mX;
+    result.mY = a.mY +b.mY;
+
+    return result;
+}
+
+void F00()
+{
+    Vector c = addVector(a, b);
+}
+hip 
+progrmmaer should allocate memory and free 
+ 
+
