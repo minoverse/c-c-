@@ -1,0 +1,1041 @@
+unix lab1
+
+
+Lab: Using UNIX/Linux system
+1 Introduction
+1. To log in to the AGH servers from home, you will need a VPN.
+Check: http://panel.agh.edu.pl/docs/openvpn/.
+• Do not store files on the server, it’s not for that.
+• Do not open too many tabs in the web browser
+(it will create files in the system).
+If you have a problem logging in to the lab, try to log in remotely from
+a terminal. When you suppose you exceeded the quota limit, check it
+using: quota. It will display disk usage and limits.
+[HW] What are hard and soft quota limits?
+
+-> A hard quota is limit on the amount of resources a user or group can consume. 
+A soft quota sets a recommended or advisory limit on resource usage. 
+2. Using the terminal in the lab, ssh (from Linux/MacOS/Windows) or
+Putty (Windows), log in to Unix/Linux system with the provided login
+and password. Change your password.
+• What is a strong password?
+• Is your password strong?
+http://www.passwordmeter.com/
+https://password.kaspersky.com/
+• BTW, even if your password is strong, it is worth checking if your
+account has been compromised in a data breach:
+https://haveibeenpwned.com/
+• Which file is modified when changing the password? -> /etc/shadow
+3. Check the manual to the command for changing the password. If it is in
+Polish, use: export LANG=en US.UTF-8 to change the manual’s language.  -> man passwd
+4. The files are stored in the system in particular directories. How to check
+the path to the program that changes the password? -> which passwd
+5. Check your own user ID and group. -> id
+6. Using the following commands, check users who work in the system (where,
+when they are logged in, what they do, what programs they use, etc.):
+1
+• users
+• w
+• who
+• finger (or pinky)
+Note: this exercise depends on the configuration of a specific server,
+as some commands can be blocked.
+[HW] What is the difference between these commands?Differences:
+->
+users and who provide simple lists of logged-in users without detailed information.
+w offers a more detailed view, including process-related information.
+finger provides comprehensive details about a specific user, making it more targeted than the others.
+The choice of command depends on the level of detail you need about the currently logged-in users or a specific user. For a general overview, w or who may be sufficient, while finger is more useful for obtaining detailed information about a particular user.
+
+7. Use script command to start making a typescript of everything printed
+on your terminal (commands typed as well). Now, try again some of
+the above-mentioned commands. To finish making a typescript, use the
+command exit or click Ctrl+D.
+• What is the default name of this file?  ->typescrpit
+• How to specify the file name in which the typescript will be saved? -> script +<file name>
+• Check if the file was created. (use: ls)
+• What does it contain? (use: cat filename). -> The file will contain a record of all the commands entered and their outputs during the session.
+
+8. Check the file using the following commands:
+• cat
+• tac
+• more
+• less
+[HW] What is the difference between these commands?Differences:
+->
+.
+more: Displays the file content one screen at a time and allows simple navigation.
+less: Similar to more but provides more advanced navigation and interactive features.
+Homework (HW):
+->
+The key difference between more and less is the additional interactive features provided by less, such as backward scrolling and searching within the file.
+Usage Tips:
+
+Use cat for quickly viewing small files.
+Use more or less for larger files to navigate through them one screen at a time.
+Use tac when you want to view the contents of a file in reverse order.
+less 파일이름
+
+more는 위에서 아래로 이동하면서 읽을 수 있지만,
+
+less는 위에서 아래, 아래에서 위로 둘 다 이동이 가능합니다.
+
+화살표키, Page Up, Page Down 키가 작동합니다.
+
+파일을 다 읽고 나가기 위해서는 q키를 눌러야 합니다. 
+
+
+9. How to close a session and log out of the system?  -> exit command or press Ctrl+D
+
+
+2 Commands
+1. How to check in the manual 1) the specific command (e.g. passwd), and
+2) the file (e.g. /etc/passwd)? man passwd, man /etc/passwd
+2. Check in the manual and test the commands below with the following
+options:
+ls l a F d R - ls -F distinguish file by / * etc 
+mkdir p m - >
+mkdir -p dir1/dir2 : 디렉토리를 만들 떄 상위(부모) 디렉토리가 없으면 만든다.(tree 명령어를 사용하면 디렉토리, 파일 구조를 트리 형식으로 볼 수 있다.
+mkdir -m 700 dir5 : 디렉토리를 만들때 권한까지 지정한다.
+rm f R - >
+r : 디렉토리 내부의 모든 내용을 삭제
+-f : 강제로 파일이나 디렉토리를 삭제하고 대상이 없으면 메시지를 출력하지 않는다.
+ls Command:
+->
+The ls command is used to list directory contents. The options you mentioned are:
+
+-l: Long format (displays detailed information about files).
+-a: Display hidden files.
+-F: Append indicator characters to entries.
+-d: List directories themselves, not their contents.
+-R: Recursively list subdirectories encountered.
+
+
+3. For the above options, test the possibility of using them together. -> Remember that the order of options typically doesn't matter, and you can often combine them into a single string as demonstrated in these examples. Always exercise caution, especially when using commands like rm with powerful options like -rf, to avoid unintended data loss.
+
+
+4. Some commands are shell built-in commands, so there might not be a
+manual for them, e.g. cd. In such cases, we can check the type of the
+command using type. If this is a shell built-in command, we can try
+using help.
+->man is used for external commands, help is used for shell built-in commands(bash shell only).
+example. type cd
+
+The type command will tell you whether cd is a built-in or an external command.
+5. Using alias command, check if there are aliases that redefine the workflow
+of the previously used commands.
+-> 
+alias ls='ls -laF'
+In this case, running ls would actually execute ls -laF due to the alias.
+alias nickname = 'command'
+
+unix lab2
+Lab: Working with files and commands
+1 Files
+If needed, check the manuals or helps for the commands for managing files and
+directories, such as: pwd, cd, mkdir, ls, mv, cp, rm, rmdir.
+Use: export LANG=en US.UTF-8 to change the language of the manual.
+1. In your home directory, create the file structure as shown below (and check
+if it is created correctly using tree):
+unix/
+unix/lab2/
+unix/lab2/alfa/
+unix/lab2/alfa/one
+unix/lab2/beta/
+unix/lab2/beta/two
+unix/lab2/beta/prima/
+unix/lab2/beta/prima/three
+-> mkdir -p unix/lab2/alfa/one
+   mkdir -p unix/lab2/beta/two
+   mkdir -p unix/lab2/beta/prima/three
+
+mv:
+mv(move) : 이름 그대로 파일을 이동시키는 겁니다. 그런데 리눅스에선
+이동하는 것 외에 다른용도로도 사용합니다. 그것은 바로 "파일이름 바꾸기"죠
+
+명령어 형식은 mv [옵션] [파일] 입니다
+
+mv명령어를 사용하면 다른 위치로 이동시키면서 파일의 이름을 바꿀 수가 있거든요
+이걸 응용해서 현재 위치에서 그냥 mv [파일1] [파일2] 이렇게 하면 파일1은 파일2가 되는
+겁니다.
+
+rm:
+rm(remove) : 이름대로 파일을 제거한다는 뜻입니다.
+rmdir(remove directory) : 이름대로 디렉토리를 제거한다는 뜻입니다.
+하지만 디렉토리는 "rm" 명령어로 못 지웁니다.
+"rmdir -p z/x/c" 이렇게 해야합니다. "rmdir -p z"로 못지운다 이거죠
+물론 파일 하나 하나 지울 때마다 정말로 지울건지 물어봅니다.
+rm -rf [파일] 이렇게 r과 같이 함께 쓰면 물어보는 거 없이 하위폴더까지 싹 지우죠
+
+cp:
+cp [옵션] [복사할 원본] [복사한 파일] 입니다.
+당연한거지만 복사할 때 이름을 바꾸는거 가능합니다. 위치도 바꿀 수 있고요
+
+cp는 그냥 옵션부터 알려드리는게 좋을 것 같으니 옵션부터 알려드리겠습니다.
+
+cp -r(recursive) : -r은 많이 보게되죠? 여러분이 아시는 그 옵션 맞습니다. 하위폴더까지
+전부 복사하라는 뜻이고, 디렉토리를 복사할 때 꼭 붙여야 하는 옵션입니다.
+cp -p(preserve) : 영어 뜻대로 보존, 즉 원본의 모든 것을 변함없이 그대로 복사한다는
+뜻입니다. 다시말해서 그 원본이 만들어진 시간, 권한 모두다 그대로 복사하는거죠
+여기서 헷갈리는 분들이 계시죠? "어? 아까 p(parents)랑 헷갈리네" 이렇게 말이죠
+
+실제로 그 기능의 옵션이 "cp"명령어에도 있습니다. 하지만
+여기선 "-P(parents)" 이렇게 대문자 P입니다 그런데 솔직히 이거 별로 쓸 일이 없어요
+/user/jtaewu 경로의 test.txt 파일을 new_test.txt라는 이름으로 /user/guest에 복사
+ex) cp /user/jtaewu/test.txt /user/guest/new_test.txt
+
+
+마지막인 echo(echo)이네요
+echo(echo) : 이름 뜻 그대로 메아리, 그냥 입력한 한 줄의 글을 메아리마냥
+다시 터미널에 출력해서 보여주는 겁니다.
+형식은 echo [옵션] [출력할 내용] 입니다.
+
+
+2. Create sample files in different ways:
+• echo "some string" > echo test.txt
+• touch touch test.txt
+• nano nano test.txt
+• vi vi test.txt
+Try to put some text into these files and save them.
+3. To show the content of the created files you can use cat.
+But it may also be used to create a file from the standard input:
+cat > cat test.txt
+Input some text in the terminal and to finish press Ctrl+D, (which will
+send END OF TRANSMISSION character, the default value for the eof
+[end of file] special control character parameter).
+->
+cat  > < >> << 
+
+
+cat(catenate)는 연결하다라는 뜻인데 여기서 의문이 생길 겁니다. "엥? cat은 파일을 읽어서 출력하는 명령어 아니였나?" 라고요.
+
+그렇게 아셔도 되는데 이제 "cat" 명령어를 사용하는 목적중 하나가 "redirection"이라고 불리우는 ">, <, >> , <<" 기호를 함께 사용해서 여러 파일의 내용을 하나로 합칠 때 사용하거든요.
+
+리다이렉션, ">,  >>"의 용도는 "출력값을 방향쪽으로 넘겨라" 입니다.
+
+예를 들어 "ls > file1"이라치면, 현재위치에서 "ls"했을 때 나오는 파일 목록들이 원래는 터미널에 출력됐다면, ">"에 의해서 그 출력값을 오른쪽의 "file1"이란 파일에에 넘기라는 거죠. 그러면 "file1"에 파일목록들이 적히는 겁니다.
+">>"는 뭘까요? 이것은 ">"과 비슷하지만 큰 차이점 하나가 있습니다. 그것은 바로 ">"는 출력값을 덮어 씌우는 개념이라면 ">>"는 기존의 값에 이어 붙이는 개념.
+
+4. List the files in your home folder using different options from the first lab.
+[HW] ls -l displays the output in a long listing format. What exactly
+is displayed in this format? 
+파일종류 및 권한(퍼미션), 링크수, 사용자(소유자), 그룹, 파일크기, 수정시간, 파일이름을 나타냅니다.
+1.파일형식(- , d , l, b , c, p, s)
+
+2.파일권한(소유자,그룹,그 외사람들)
+
+3.링크 수
+
+4.파일 소유주
+
+5.파일 그룹
+
+6.파일크기
+
+7.파일이 만들어진 시간
+
+
+
+-rwxr-xr-x 1 pi pi 5720 Jul  3 20:06 a.out
+1
+5. How to move along your tree structure? Test the commands cd and pwd
+using absolute and relative paths, including special directories . and ...
+
+
+6. Test the meta-characters (asterisk *, question mark ?), e.g. with the
+command ls in the directory /usr/bin, e.g.
+• ls /usr/bin/w*
+• ls /bin/l?
+Which of the listed commands can you recognise?
+->"*" : "모든"이란 의미를 가지고 있습니다.
+
+--예시--
+'ade*' = ade로 시작하는 모든 파일
+'*ade' = ade로 끝나는 모든 파일
+'a*b' = a로 시작해서 b로 끝나는 모든 파일
+
+--------------------------------------------------------------------------------------------
+
+
+"?" : "모든 한 글자"란 의미를 가지고 있습니다.
+
+7. How to get to the home directory in different ways? ->cd, cd ~
+   How to go to the home directory of a given user?  -> cd ~username
+   How to get to the previous directory?  -> cd -
+8. In the directory unix/lab2/, use the command: touch {a,b,c}{.txt,.dat}
+What happened? How to move all the files with the .txt extension into
+unix/lab1/ with a single command? -> question
+9. Try to delete the /tmp directory. What is the result and why?
+
+2 Links
+1. Using ln -s, please create a symbolic link to a file in another directory.
+->하드링크는 "실체가 있으며 원본과 연결된 파일" 이라 할 수 있습니다.
+
+먼저 소프트(심볼릭)링크는 "ln -s(soft or symbolic)" 란 명령어로 만들 수 있습니다
+정확히는 "ln -s [링크만들 대상파일] [링크파일이름]
+소프트링크"는 윈도우의 "바로가기" 처럼 삭제해도 원본에 영향을 주지 않습니다.
+하지만 반대로 실제 드라이브에 있는 원본을 삭제하면바로가기와 마찬가지로 소프트 링크는 사용 할 수 없습니다.
+
+
+2. How does such a link work when reading, writing, or executing it? What
+happens if one deletes a link or the original file? 
+-> . Deleting the link does not affect the original file, but deleting the original file renders the symbolic link as a dangling link.
+
+
+3. Create a symbolic link to the directory. Go inside the directory of the
+symbolic link and test the pwd command with options -L or -P. What is
+the difference?
+pwd -L  # Prints the logical current working directory (resolving symbolic link)
+pwd -P  # Prints the physical current working directory (without resolving symbolic link)
+
+3 Finding files
+find is used to search for files in the file system and its basic usage is:
+find path -name filename
+->find / -type d -name '?ab?' -ls -exec rm -r {} \;
+이렇렇게 "find"명령어를 쳤을 때 실행되는 순서는
+
+(파일을 찾겠다) (/에서) (타입이 디렉토리이고) (이름은 4글자 중 가운데가 ab며)
+(앞의 결과를 "list" 형태로 보여주고) (그 결과 나온 파일들을 하위 파일까지 지워라) 
+
+To omit the ”Permission denied” warnings, add at the end: 2>/dev/null
+Using find look for the following files in the system:
+1. in your home directory find all directories, ->find ~/ -type d 2>/dev/null
+2. in your home directory find all files bigger than 500kB, -> find ~/ -type f -size +500k 2>/dev/null
+find -size [+-(이상,이하)크기(c, k, M)]
+
+
+"-size"도 이름 뜻대로, "조건 값"에 "해당하는 크기의 파일을 찾는" 조건입니다.
+
+"+"는 "이상"이란 뜻으로 "-size +10M" 이렇게 하면 "10M이상의 파일"을 찾으란 겁니다.
+"-"는 "이하"라는 뜻으로 "-size -10M" 이렇게 하면 "10M이하의 파일"을 찾으란 겁니다.
+물론 "+"나 "-" 중 아무것도 안쓰면 정확하게 뒤에 적은 사이즈 파일만 찾습니다.
+
+그런데 여기서 정확한 사이즈의 파일을 찾고 싶으면 "바이트단위(c)"로 찾아야 합니다.
+KB나 MB같이 단위가 들어간 경우, 정확한 파일만 찾는게 아니라 근삿 값까지 찾습니다.
+
+파일의 사이즈의 단위는
+c(Byte), k(KB), M(MB)가 있습니다
+type 을 사용해서 특정 파일 타입만 따로 추출할 수도 있습니다.
+
+d : 디렉토리
+f : 일반적인 파일
+l : 심볼릭 링크
+atime : n일 이내에 액세스된 파일을 찾음.
+ctime : n일 이내에 만들어진 파일을 찾음.
+mtime : n일 이내에 수정된 파일을 찾음.
+cnewer file : 해당 파일보다 최근에 수정된 파일을 찾음.
+3. in /usr/bin find all regular files with multiple links, ->find /usr/bin -type f -links +1 2>/dev/null
+4. in /usr/bin, find all files with the names starting with au, ->find /usr/bin -type f -name "au*" 2>/dev/null
+5. in /tmp find all files owned by root, -> find /tmp -user root 2>/dev/null
+6. in /tmp find all files modified in last 24h, -> find /tmp -type f -mtime -1 2>/dev/null
+find -mtime -3      3일(72시간)보다 새로움
+find -mtime 3       4일(96시간) 전에서 3일(72시간)전까지
+find -mtime +3     4일(96시간)전보다 과거 
+
+ 4일 전부터 2일 전까지 갱신된 파일 목록을 표시
+$ find . -name "*.log" -mtime -4 -mtime +1 -print
+
+7. in /tmp find all regular files with permission to read for anyone. -> find /tmp -type f -perm /444 2>/dev/null
+-> -perm +number (not symbolic!!)
+
+unix lab3
+1. How to check the permission rights for a file? -> ls -l filename
+2. What is the difference between numerical and symbolic permissions?
+->Numerical Permissions:
+Numerical permissions use octal numbers (base-8) to represent file permissions.
+Symbolic Permissions:
+Symbolic permissions use letters and symbols to represent file permissions.
+일반 파일의 rwx
+
+r(read) : 파일을 read, 파일의 내용을 읽을 수 있는 권한
+w(write) : 파일을 witre, 쓰다(라는 개념이 좀 헷갈릴 텐데)그냥 파일을 바꿀 수 있는 권한
+x(excute) : 파일을 excute, 실행할 수 있는 권한
+
+디렉토리에서의 권한 'rwx'
+
+r(read) : 읽겠다, 즉 디렉토리 내부(파일들)을 볼 수 있는 권한
+w(write) : 쓰겠다, 일반파일과 같은 맥락으로 디렉토리 내부 파일들을 변경할 수 있는 권한
+x(excute) : 실행하겠다, 디렉토리의 기능(디렉토리 내부로 이동)을 실행할 수 있는 권한
+
+디렉토리에 'w'권한이 있으면, 파일에 'w'권한이 없어도 그냥 덮어버릴 수 있기에 조심해야한다.
+
+3. Transform the following numerical permissions into symbolic ones:
+(a) 1
+(b) 12
+(c) 123
+(d) 1234
+(e) 4321
+(f) 7654
+(g) 4567
+4. Transform the following symbolic permissions into numerical ones:
+(a) r---w---x
+(b) rw-r-xr-x
+(c) rwxrwxrwt
+(d) rwsr-xr-x
+(e) rwSrw-rwT
+5. What are the conditions for user A to create directories in the directory
+that belongs to user B, and what is sufficient to save files in the directory? chmod o=wx filename
+6. How SUID/sTicky bits work on files/directories? Please check the permissions of the files /tmp and /usr/bin/passwd and explain their permissions.
+SetUID는 "UID"니까 "u(user)"의 "x"자리에 들어갈 것이고, "u"는 첫 번째니까 4000!
+SetGID는 "GID"니까 "g(group)"의 "x"자리에 들어갈 것이고, "g"는 두 번째니까 2000!
+Stickybit는 나머지인 o(other)의 "x"자리에 들어가겠군! 그리고 마지막이니까 1000!
+ 이렇게 말이죠!
+
+
+여기까지 정리해보면,
+
+특수권한 "SetUID, SetGID, StickyBit"를 부여하면 각각 u,g,o 실행권한 자리에 "x"대신 s, ,s ,t가 들어가는 것이고
+
+저 헷갈리는 특수권한 숫자(SetUID{4000}, SetGID{2000}, StickyBit{1000})는 기존의 권한처럼, "chmod" 명령어로 파일에 특수권한을 줄 때 쓰는 거랍니다..
+
+
+여기서 마지막 개념!  "s(SetUID), s(SetGID), t(StikcyBit)" 모두 기존 파일에 실행권한 "x"가 있었다면 소문자 "s, s, t"가 들어가고 , 실행권한 "x"가 기존에 없었다면 
+대문자 "S, S, T"가 들어갑니다
+SetUID(s)란, 말 그대로 파일을 실행할 때 Set(적용해라) UID(파일의 소유자로)입니다.
+
+다시말해, SetUID가 적용된 파일을 실행하면, 실행 파일이 끝날 때 까지
+파일의 소유자의 UID가 되는 겁니다. 
+"SetUID"는 다른 사람의 파일을 실행할 때 소유자 권한이 필요한 경우 사용합니다.
+
+SetGID(s)란, 파일을 실행할 때 Set(적용해라) GID(파일의 그룹으로)입니다.
+"tty = 터미널"
+디렉터리에 "SetGID"를 설정했을 경우 그 디렉터리 안에 파일을 만들면
+그 누가 만들더라도 디렉터리의 GID로 적용되어 생성
+
+StickyBit
+"디렉터리의 권한이
+바로 밑 파일까지 적용된다"
+"/tmp/"
+chmod o["+" or "-" or "="]t [파일]
+임시파일이란 실시간으로 실행되는 프로세스가 자주 사용하는 정보가 있다면 그걸 파일 형태로 만들어 둔 다음 쓰는겁니다
+
+7. How umask is changing default permissions? Be aware that there is probably no manual for umask command, so check it using e.g. --help option.
+• Check the current umask in a numeric and symbolic form.
+• Create a regular file test1 and a directory test2, observe and explain
+the permissions of the newly created files.
+• Execute the following command and explain the behavior:
+chmod 0664 test*; chmod a+X test? -> just check permission right(nothing special to write or memo)
+파일에 대한 기본 생성 권한은 666이며 디렉토리의 경우 777입니다
+umask 0022 is basic setting value.(no write perm)
+unix lab4
+1. Check the type of your login shell using finger and in /etc/passwd.
+->cat /etc/passwd
+사용자 계정명	맨 앞에 필드는 사용자의 계정명을 나타냅니다
+패스워드	그 다음의 필드는 패스워드 필드인데, x가 의미하는 바는 사용자의 패스워드가 /etc/shadow에 암호화되어 저장되어있다는 뜻입니다.
+UID	사용자의 user id를 나타냅니다. 관리자 계정(Root)은 UID가 0입니다.
+GID	사용자의 그룹 ID를 나타냅니다. 관리자 그룹(Root)의 GID는 0입니다.
+comment	사용자와 관련한 기타 정보로 일반적으로 사용자의 이름을 나타냅니다.
+홈 디렉토리	사용자의 홈디렉토리를 의미합니다. 관리자 계정의 홈 디렉토리는 /root이며, 다른 사용자의 홈 디렉토리는 기본으로 /home/ 하위에 계정명으로 위치합니다.
+로그인 쉘	사용자가 로그인시에 사용할 쉘을 의미합니다. 보통 사용자의 쉘은 성능이 우수한 bash쉘을 사용합니다. 로그인이 불필요한 계정도 있는데요. 이때는 이 필드가 /usr/sbin/nologin, /bin/false, /sbin/nologin 등으로 표기됩니다. 이것은 사용자가 아니라 어플리케이션이기 때문이죠. 아래처럼 말이죠.
+
+sshd:x:126:65534::/run/sshd:/usr/sbin/nologin
+gnome-initial-setup:x:124:65534::/run/gnome-initial-setup/:/bin/false
+gdm:x:125:130:Gnome Display Manager:/var/lib/gdm3:/bin/false
+
+2. In the shell, we can take advantage of environment variables.
+Using printenv check the existing environment variables.
+Check the meaning and the values of the following variables:
+• HOME 
+• SHELL
+• SHLVL
+• PATH
+• PWD
+• USER
+->meaning and values of the specified variables:
+
+HOME: The home directory of the user. ex) /home/student2023/3min
+SHELL: The path to the user's default shell. ex) /bin/bash
+SHLVL: The shell level or nesting level. ex)SHLVL = 1
+PATH: The directories where the system looks for executable files.
+PWD: The current working directory. ex)3min
+USER: The username of the current user. ex)3min
+3. Using other shells like csh or tcsh find out what can you check using the
+following commands:
+• printenv SHELL
+• echo $SHELL
+• echo $0
+->csh or tcsh will give you information about the shell, the environment, and the process name, respectively.
+4. Using the PS1 variable, change the prompt in the terminal, e.g.:
+export PS1=’\u@\h:\w$’ Check other possibilities of setting the prompt,
+e.g. set the prompt to:
+• I am user in working directory>
+• date,time$
+where underlined text should be changed according to the current environment (see manual for bash and look for PS1 and for PROMPTING).
+
+<특수문자 \>
+
+1. 특수문자 앞에 써서 뒤의 특수문자 기능을 삭제한다
+
+5. Define your own environment variable (e.g. MYVAR and set its value to
+MYVALUE). How to set and unset such a variable?
+# Set the environment variable
+export MYVAR=MYVALUE
+
+# Access the value of the variable
+echo $MYVAR
+
+# Unset the variable
+unset MYVAR
+
+6. Give an example of brace expansion and how it can be used in bash.
+->echo {apple,banana,cherry}
+# Output: apple banana cherry
+
+# Combining brace expansion with other characters
+echo file{1..3}.txt
+# Output: file1.txt file2.txt file3.txt
+Brace expansion is a powerful tool for simplifying repetitive tasks and generating structured sequences in a concise manner. It's important to note that brace expansion is performed by Bash before any other expansions or command execution, making it a simple and efficient way to generate lists of strings.
+
+
+7. Compare the behaviour of the following commands:
+echo $SHELL ->    value of the SHELL variable.
+echo "$SHELL" -> value of the SHELL variable
+echo ’$SHELL’ -> This will literally print the string $SHELL
+echo \$SHELL -> This will literally print the string $SHELL
+echo \\$SHELL ->This will print the literal string \SHELL
+echo \$$SHELL -> print the value of the SHELL 
+echo "my system: uname" -> This will print the string "my system: uname" without command substitution
+echo "my system: ’uname’" -> This will print the string "my system: ’uname’"
+echo "my system: ‘uname‘" ->"my system: ‘uname‘"
+echo "ls -l" ->This will print the string "ls -l"
+echo ’ls -l’ ->  This will literally print the string 'ls -l' without command substitution.
+echo ‘ls -l‘ -> ‘ls -l‘
+"[]" : "[]안에 있는 모든 한 문자"란 의미를 가지고 있습니다.(될 수 있는 값이 여러 개)
+이것도 말로는 감이 잘 안오실텐데, 예시를 보시면 감이 오실 겁니다.
+
+--예시--
+'[.abc,]' = . a b c ,
+'[de]a[cf]' = dac daf eac eaf
+'[*]a' = aa, ba, ca,...,1a, 2a,....Aa,..., .a, ...
+"{}" : "{}안에 있는 모든 한 단어"란 의미를 갖고 있습니다. (될 수 있는 값이 여러개죠?)
+참고로 []는 문자 단위로 취급하고, {}는 단어 단위로 취급한다는 것이 차이점입니다. 
+
+차이점을 와닿게 하기 위해 예시를 들어볼게요!
+
+[a,b,cde] = , a b c d e
+{a,b,cde} = a b cde
+
+ ' '(single quotes)란 한국말로 "작은 따옴표"죠?
+이 ' '를 이용해 리눅스에서 문장을 감쌀 시, 감싸진 문자들은 모두 
+쉘에서 "아무런 의미도 없는 일반 문자 취급"합니다 ex) '*abv' : 그냥 이름이 *abv란 파일
+
+무슨 소리냐면, '로 문자들을 감쌀 시, 앞서 설명한 "와일드카드"나 아직은 안 배운
+"환경변수를 호출하는 $"와 같은 , "기능을 가진 모든 기호"들을 쉘에선 그냥 순수한 문자 취급한다는 것이죠.
+
+큰 따옴표 " "(double quotes)같은 경우엔 작은 따옴표 ' ' 와 다르게 "$(dollar), `(back quote 또는 grave), \(escape)"만 쉘이 처리할 수 있게 합니다.
+
+즉 ""로 문자를 감싸면 $PATH와 같은 "환경변수"나 "`, \"가 붙은 문자들은 쉘이 인식할 수 있다는 것이죠.
+
+8. Using export (or not), it is easy to test the inheritance of the bash prompt:
+bash
+MYVAR=somevalue
+printenv MYVAR
+echo $MYVAR
+bash
+printenv MYVAR
+echo $MYVAR
+exit
+export MYVAR
+printenv MYVAR
+echo $MYVAR
+bash
+printenv MYVAR
+echo $MYVAR
+exit
+exit
+-> just check
+9. There is a fixed execution order of startup files. In the manual to bash,
+check the names of the startup files. Add in each startup file an echo
+command with some additional information e.g. echo alpha, echo beta,
+etc. and determine the order of startup files when started bash as an
+interactive login shell, a login shell, or when started as an interactive shell
+(but not a login shell), e.g. bash or bash --login.
+Add the clear command when closing the shell. You can test the behaviour when you call a specific file using the source command.
+ 
+->Interactive Login Shell (/etc/profile, ~/.bash_profile, ~/.bash_login, ~/.profile):
+# /etc/profile
+echo "alpha in /etc/profile"
+
+# ~/.bash_profile or ~/.bash_login or ~/.profile
+echo "beta in ~/.bash_profile"
+
+When Bash is started, it reads certain startup files depending on the type of shell session. The order of startup files can vary based on whether it's an interactive login shell, a login shell, or an interactive shell (but not a login shell). Here's a summary of the order for each type:
+
+Interactive Login Shell:
+
+/etc/profile
+The first existing file among ~/.bash_profile, ~/.bash_login, and ~/.profile
+Login Shell (non-interactive):
+
+/etc/profile
+The first existing file among ~/.bash_profile, ~/.bash_login, and ~/.profile
+Interactive Shell (non-login):
+
+The first existing file among ~/.bashrc, ~/.bash.bashrc, and ~/.bash_profile
+Now, to determine the order and contents of these startup files, you can add echo commands to each file to print a message when it is sourced. For example:
+
+/etc/profile:
+
+echo "Executing /etc/profile"
+~/.bash_profile:
+
+echo "Executing ~/.bash_profile"
+~/.bash_login:
+
+echo "Executing ~/.bash_login"
+~/.profile:
+
+echo "Executing ~/.profile"
+~/.bashrc:
+
+echo "Executing ~/.bashrc"
+~/.bash.bashrc:
+
+echo "Executing ~/.bash.bashrc"
+After modifying these files, you can start various shell sessions and observe the order of messages printed to the terminal. For example:
+
+For an interactive login shell:
+
+bash --login
+For a login shell (non-interactive):
+
+bash -l
+For an interactive shell (non-login):
+
+Make sure to review and understand the existing content in these files, and be cautious when making changes to system-wide files.
+Closing the Shell (~/.bash_logout):
+
+# ~/.bash_logout
+echo "delta in ~/.bash_logout"
+clear
+
+You can test the behavior by calling a specific file using the source command. For example:
+
+source ~/.bashrc
+10. Create a bin directory in your home directory and configure your system so
+that any executable file placed in this directory can be run from anywhere
+in the system by you without specifying the full path to this program.
+->
+mkdir ~/bin
+Check if ~/bin is in Your PATH:
+Run the following command to check if ~/bin is already in your PATH
+echo $PATH
+If ~/bin is not in the output, we'll add it.
+export PATH=$PATH:~/bin
+chmod a+x ~/bin
+Add ~/bin to Your PATH:
+Add the following line to your shell profile configuration file (e.g., ~/.bashrc, ~/.bash_profile, or ~/.zshrc depending on your shell):
+
+unix lab5
+1. Redirect the results of various commands (ls, finger, who) to files and
+view the resulting files, e.g.:
+ls > file list
+Compare > and >>.
+->The > operator overwrites the contents of the file with the output of the command.
+The >> operator appends the output of the command to the end of the existing file.
+
+2. Explain the results of the following commands:
+rm /tmp 1>a 2>b
+find /tmp -type d 1>d 2>e
+->rm -R
+"2>" 기호를 사용하면 표준 에러를 파일로 리다이렉션할 수 있습니다. 이 기호를 사용하면 명령어 실행 시 발생하는 오류 메시지를 파일에 저장할 수 있습니다.
+예시
+$ ls not_exist_directory 2> error.txt
+rm -r /tmp >a 2>b
+rm -r /tmp: Recursively remove the /tmp directory and its contents.
+>a: Redirect stdout to the file named a.
+2>b: Redirect stderr to the file named b.
+
+3. Using the seq command, write the numbers from 1 to 10 three times in
+the file ~/lab5/numbers.txt, each on a new line. The command can be
+executed three times, each time adding a sequence of numbers to the file.
+->
+seq 1 10 >> numbers.txt 
+seq 1 10 >> numbers.txt 
+seq 1 10 >> numbers.txt 
+(seq 10; seq 10; seq10) >> numbers.txt 
+4. Using sort or uniq, display unique numbers from the ~/lab5/numbers.txt
+file (i.e. remove duplicates).
+->sort -nu ~/lab5/numbers.txt
+sort -n ~/lab5/numbers.txt | uniq
+5. Using wc count in /tmp/american-english.txt the number of:
+(a) lines,man 
+(b) words,
+(c) characters.
+-> 줄(line), 단어(word), 문자(char), 그리고 바이트(byte) 수를 알려준다. wc -l, wc -w, wc -m
+Check the behavior of the command if the file is given as an argument for
+a command or it is redirected to the command standard input using <. 
+-> same result
+6. Using tr:
+(a) Display the content of /etc/passwd in such a way that all colons
+’:’ are replaced with comas ’,’.
+-> cat /etc/passwd | tr ':' ','
+   tr ':' ',' < /etc/passwd
+(b) Display the content of /tmp/american-english.txt in one line.
+-> tr '\n' ' ' < /tmp/american-english.txt
+   tr -d '\n' < /tmp/american-english.txt
+(c) Display the content of /etc/passwd in capital letters.
+-> tr 'a-z' 'A-Z' <  /etc/passwd
+(d) Display only the digits from /etc/passwd
+(hint: delete the complement of digits).
+-> tr -c는 complement의 약어로, 특정 문자 집합을 대상으로 작동할 때 그 집합에 속하지 않는 문자를 대상으로 하는 옵션입니다.
+in set A - B = A AND B^C SIMILAR CONCEPT
+예를 들어, tr -cd '0-9' 명령어에서 -cd는 숫자(0에서 9까지의) 집합을 대상으로 하면서, -c 옵션은 이 집합에 속하지 않는 문자를 삭제하라는 의미입니다. 따라서 이 명령어는 /etc/passwd 파일에서 숫자만을 추출하여 보여줍니다.
+tr -cd '0-9' </etc/passwd
+tr-s :squeeze . delete the repeat of same word or order.
+echo "hellooo   world" | tr -s 'o' _> hello world
+7. Using date how to display:
+(a) today’s date, -> date
+(b) the current hour (only), -> date + %H or date + %I   incase of 2pm %H gives 14 and %I gives 2
+(c) the current date in the format: YYYYMMDD. -> date +%Y%m%d   %y is onlt pront last two digit exmaple 2023 %y print 23
+8. Using grep or other commands:
+-> ^	문자열 라인의 처음
+   $	문자열 라인의 마지막
+-c : 일치하는 행의 수를 출력한다. count  grep -c 
+-i : 대소문자를 구별하지 않는다.
+-v : 일치하지 않는 행만 출력한다.
+-n : 포함된 행의 번호를 함께 출력한다.
+-l : 패턴이 포함된 파일의 이름을 출력한다.
+-w : 단어와 일치하는 행만 출력한다.
+-x : 라인과 일치하는 행만 출력한다. grep -x: This option matches the entire line. It ensures that the pattern matches the whole line, not just a part of it
+-r : 하위 디렉토리를 포함한 모든 파일에서 검색한다.
+-m 숫자 : 최대로 표시될 수 있는 결과를 제한한다.
+(a) In /etc/passwd find the line about your account.
+-> grep '<your_username>' /etc/passwd
+(b) In file /etc/passwd find the line about your account with the context
+lines (a line before and after your line).
+->grep -A 1 -B 1 '<your_username>' /etc/passwd
+(c) Check how many users use bash shell as a login shell.
+-> grep -c /bin/bash /etc/passwd
+(d) Check if the particular word is in the /tmp/american-english.txt
+file?
+-> grep "^word$" /tmp/american-english.txt
+grep -w 'word' /tmp/american-english.txt
+(e) Create two files using the following command:
+seq 1 2 13 > odd; seq 1 12 > all
+Check and explain the behavior of the following commands:
+• grep -xFf odd all
+->grep: Searches for patterns in files.
+-x: Matches the whole line.
+-F: Treats the patterns as fixed strings.
+-f odd: Reads the patterns to search from the file odd.
+This command searches for lines in the file all that exactly match the lines present in the file odd. The -xF ensures that the entire line is matched, and -f odd provides the patterns to search for.
+
+• comm -12 <(sort odd) <(sort all)
+->comm: Compares two sorted files line by line.
+-12: Suppresses lines unique to file 1 and file 2, showing only common lines.
+This command compares the sorted content of the files odd and all and displays only the lines that are common to both files.
+
+comm
+
+• 두 개의 파일을 줄 단위로 비교하여 출력하는 명령어
+
+comm [옵션] 파일명1 파일명2
+
+-1 '파일1'에만 있는 내용을 제외하고 내용 출력
+
+옵션
+
+설명
+
+-2 '파일2'에만 있는 내용을 제외하고 내용 출력
+
+-3 '파일'과 '파일2'에 공통으로 존재하는 내용을 제외하고 출력
+• diff -c <(sort odd) <(sort all)
+->
+diff: Compares files line by line.
+-c: Context output format (displays lines of difference and a few lines of context).
+This command compares the sorted content of the files odd and all and displays the differences in a unified context format (-c), showing lines that differ and providing a few lines of context.
+diff [옵션][비교파일1][비교파일2]
+-c
+두 파일간의 차이점 출력
+
+cut
+c, --characters	문자열을 기준으로 잘라냅니다.	
+-d, --delimiter	지정한 문자를 구분자로 사용합니다. (기본 TAB)	
+-f, --fields	필드를 기준으로 잘라냅니다.
+$ cut -c 2-4 < sed-example.txt
+
+nix
+ear
+nix
+nix
+BASH
+
+숫자 앞 뒤에 하이픈(-)을 붙여서 범위를 지정할 수 있습니다. 아래는 10 번째 글자 이후만 잘라서 출력합니다.
+
+$ cut -c 10- < sed-example.txt   
+
+reat os. unix is opensource. unix is free os.
+rating system.
+x which one you choose.
+asy to learn.unix is a multiuser os.Learn unix .unix is a powerful.
+BASH
+
+아래는 맨 앞의 6자까지만 출력합니다.
+
+$ cut -c -6 < sed-example.txt
+
+unix i
+learn 
+unix l
+unix i
+BASH
+delimiter 지정Link to delimiter 지정
+-d 옵션으로 구분자를 지정할 수 있습니다. -d 옵션을 사용할 경우 -c 나 -b 는 사용할 수 없고 필드를 지정하는 옵션인 -f 만 사용해야 합니다.
+
+/etc/passwd 파일의 구분자는 : 이므로 아래는 시스템에 등록된 사용자의 id 를 표시합니다.
+
+$ cut  -d ':' -f 1 /etc/passwd
+
+sshd
+chrony
+ec2-user
+apache
+nginx
+
+
+In summary:
+
+The first command (grep -xFf odd all) finds lines in all that exactly match the lines in odd.
+
+The second command (comm -12 <(sort odd) <(sort all)) finds common lines between odd and all.
+
+The third command (diff -c <(sort odd) <(sort all)) shows differences between odd and all along with context information.
+
+unix lab7
+Lab: Pipelining in UNIX/Linux system
+1. A pipeline is a mechanism for inter-process communication using message
+passing. Execute and observe the results of the following simple pipelines:
+ls | wc
+-> Count the number of files in the current directory:
+ps | sort
+->This command lists the processes using ps and then sorts them alphabetically using sort.
+ps -A | grep bash
+->This command lists all processes using ps -A and then filters only those containing "bash" using grep.
+ps | head -n 1
+-> This command lists all processes using ps and displays only the first process using head.
+
+who | wc
+->  currently logged-in users using who and then counts the number of lines (users) using wc.
+w | sort | grep "ps"
+-> s command displays information about logged-in users using w, then sorts the output and filters only the lines containing "ps" using sort and grep.
+
+2. Count the number of regular files in your home directory.
+-> find ~/ -type f | wc -l
+
+3. Display from /etc/passwd the line with the information about root user.
+From the line cut out and print only the user command interpreter, i.e.
+login shell in this case.
+-> cat /etc/passwd | grep '^root' | cut -d: -f7
+
+
+4. Count the number of users’ home directories on the server.
+->find ~ -type d | wc -l
+
+5. Create a list of logged-in users sorted alphabetically?
+How to display only the last 10 users from the list?
+ -> who | sort | tail -n 10
+
+6. Display the list of pseudo terminal devices (pts) used by the currently
+logged-in users.
+->
+who | grep -o 'pts[^ ]*'
+who | grep -o "pts.*" (recommend answer)
+The dot . means any character,
+. (dot): Matches any single character except for a newline character (\n).
+[^ ]: Matches any single character that is not a space.
+This command uses grep with the -o option to only output the matched parts of the lines. The pattern 'pts[^ ]*' matches the "pts" followed by any non-space characters. This will provide you with a list of pseudo terminal devices used by currently logged-in users 
+
+ w w 명령어는 서버의 간단한 정보와, 사용자들의 정보를 함께 보여줍니다
+보여주는 사용자 정보로는 - 사용자 명 (USER) - 터미널 정보 (TTY) - 접속 IP (FROM) - 로그인 시각 (LOGIN@) - CPU 사용량 (IDLE, JCPU, PCPU) - 현재 사용 명령어 (WHAT)
+
+who 현재 시스템에 접속한 사용자의 간단한 정보를 보여줍니다. (user who logged in now)
+ 사용자 명, 터미널 정보(tty or pts), 접속 시각, 접속 IP 를 보여줍니다.
+
+
+
+whoami
+나의 사용자 명을 보여줍니다.
+7. Count the number of occurrences of the letter ’k’ in /etc/passwd.
+-> grep -o 'k' /etc/passwd | wc -l
+
+grep
+-c : 일치하는 행의 수 출력
+-i : 대소문자 구별하지 않음
+-v : 일치하는 않는 행만 출력
+-n : 해당 문자열이 포함된 행의 번호를 함께 출력
+-l : 패턴이 포함된 파일의 이름 출력
+-H  : 패턴이 포함된 파일의 이름과 함께 내용 출력
+-w : 단어와 일치하는 행만 출력
+-x : 라인과 일치하는 행만 출력
+-o : 행의 일치하는 부분만 출력
+
+8. Count the number of files in /usr/bin containing ubuntu in their file
+names.
+-> 
+   find /usr/bin -type f -name "*ubuntu*" |wc -l
+
+9. From the last 6 lines in the /etc/passwd file, select these containing the
+letter W and count the total number of characters in these selected lines.
+->tail -n 6 /etc/passwd | grep 'W' | wc -m
+10. Show the first 7 files ending with the letter p from /usr/bin (sorted alphabetically).
+-> ls /usr/bin | grep 'p$' | head -n 7 | sort
+ ls [option] [file or directory] 
+pipe line -> i oraganaze it in linux picture file.
+11. Find all text files you created in your home directory and copy them to
+the ~/backup directory.
+->find ~ -type f -name "*.txt" -exec cp {} ~/backup \;
+Complex pipelines
+Test and check what the following commands do (do not copy the commands,
+just rewrite them, because some quotes may not be copied correctly):
+• cat /etc/passwd | cut -d: -f1 | sort | uniq | grep ’^g’
+-> This command extracts usernames from the /etc/passwd file, sorts them, removes duplicates, and then filters for usernames starting with 'g'.
+
+• tr ’[a-z]’ ’[A-Z]’ < /etc/passwd
+-> This command uses tr to translate lowercase letters to uppercase in the content of the /etc/passwd file.
+
+• cat /etc/passwd | tr ’:’ ’\n’ | sort | uniq -ic | sort -n
+->
+uniq[옵션]
+-c : 각 출력 행 앞에 입력에서 중복된 행의 횟수를 출력
+-d : 입력에서 중복된 행만 출력
+-u : 원래 파일에서 연속으로 중복되지 않는 행만 출력
+-i : 비교할 때 대소문자 구분 안함
+This command transforms each ':' in /etc/passwd to a newline, sorts them, counts occurrences, removes duplicates (with counts), and then sorts the results numerically.
+
+• find /tmp -perm -o=r -size +500k 2>/dev/null
+-> This command uses find to search for files in the /tmp directory that have read permissions for others (-perm -o=r) and a size greater than 500 kilobytes (-size +500k). The 2>/dev/null part redirects any error messages to /dev/null to suppress error output.
+
+• du -Sh | sort -h | tail -5
+->du  명령어는 Disk Usage의 약자로 파일, 디렉토리 용량을 확인할때 사용되는 명령 입니다 서버 관리자가 디스크 사용량을 파악하기 위해 자주 사용되는 명령어 이며, 또한 특정 파일이나 디렉토리 단위로 용량을 파악하는 기능도 가지고 있습니다.
+-a	모든 파일의 정보를 출력하는 옵션 입니다.
+-b	바이트 단위를 출력하는 옵션입니다.
+-c	모든 파일의 디스크 사용 정보와 합계를 출력하는 옵션입니다.
+-k	1KB 단위로 출력하는 옵션입니다.
+-h	관리자가 보기 쉬운 단위(Byte, Kbyte, Mbyte, Gbyte) 로 출력하는 옵션입니다.
+-s	지정된 디렉토리 내에 존재하는 모든 파일과 하위 디렉토리의 용량을 합친 전체용량을 출력하는 옵션 입니다.
+This command uses du to estimate file space usage (-S for separate directories, -h for human-readable sizes), then sorts the output (sort -h) based on sizes, and finally uses tail -5 to display the top 5 entries (directories).
+
+• find ~/lab1 -type f -exec cp {} ~/copy/ \;
+-> his command uses find to locate all files (-type f) in the ~/lab1 directory, and for each file found, it executes the cp command to copy the file to the ~/copy directory.
+
+These commands are powerful tools for file and directory operations, so be cautious when using them, especially with commands that involve file copying or removal.
+
+Complex pipelines may serve as a tool for analyzing content from webpages:
+1. Analyze and explain what is the result of the following pipeline:
+curl "https://en.wikipedia.org/wiki/Bash_(Unix_shell)" | \
+-> Bash Wikipedia 페이지의 콘텐츠를 검색합니다.
+
+sed "s/[^a-zA-Z ]/ /g" | \
+->
+tr "A-Z " "a-z\n" | \
+
+grep "[a-z]" | \
+
+sort -u | \
+
+comm -23 - /tmp/american-english.txt
+
+
+unix lab8
+Lab: Basics of SED and AWK
+1 SED
+1. Using sed display the following lines of the file (e.g. /etc/passwd):
+(a) 4th, 7th, 10th and 13th lines,
+ -> sed -n '4p;7p;10p;13p' /etc/passwd
+
+Print specific lines (n): Print only lines that match a specified pattern.
+sed -n '/pattern/p' filename
+The -n option suppresses automatic printing, and then the p command is used to print the lines that match the specified conditions.
+
+(b) the lines specified by the interval (e.g. from 3rd to 5th inclusive),
+->sed -n '3,5p' /etc/passwd
+
+(c) lines describing people with a login starting with ’z’,
+-> sed -n '/^z/p' /etc/passwd
+^ is used to anchor the pattern to the beginning of the line.
+
+(d) lines describing people with a login starting with ’w’ or ’z’,
+->sed -n '/^[wz]/p' /etc/passwd
+[wz] specifies a character class; it matches either 'w' or 'z'.
+
+(e) only non-empty lines,
+-> sed -n '/./p' /etc/passwd
+. in the regular expression matches any character, so /./ matches lines that contain at least one character.
+Dot (.):
+
+. is a wildcard that matches any single character, except for a newline character (\n).
+For example, the pattern /a.c/ would match "abc", "adc", "a1c", etc., where the dot represents any character.
+Asterisk (*):
+
+* is a quantifier that matches zero or more occurrences of the preceding character or group.
+For example, the pattern /ab*c/ would match "ac", "abc", "abbc", "abbbc", and so on.
+Question Mark (?):
+
+? is a quantifier that matches zero or one occurrence of the preceding character or group.
+For example, the pattern /ab?c/ would match "ac" and "abc", where the b is optional.
+Summary:
+
+. is a wildcard for any single character.
+* is a quantifier for zero or more occurrences.
+? is a quantifier for zero or one occurrence.
+In the context of your sed examples, /./ is used to match lines with at least one character, as . matches any character.
+
+(f) only lines containing digits.
+->sed -n '/[0-9]/p' /etc/passwd
+
+Remember to replace /etc/passwd with the actual path to the file you want to process.
+
+2. Using sed how to:
+(a) replace the separator (colon) in the /etc/passwd file with a space,
+-> sed 's/:/ /g' /etc/passwd
+Global substitution (s/find/replace/g): Replace all occurrences of "find" with "replace" on each line.
+sed 's/find/replace/g' filename
+(b) display only the logins of users saved in the /etc/passwd file,
+->sed -n 's/\([^:]*\).*/\1/p' /etc/passwd
+
+(c) replace all root words with your login (the current working login,
+not a string with a login; test your command on /etc/aliases),
+->
+
+(d) replace root with login, but only in lines containing ’www’,
+(e) replace root with login, but only in lines without ’www’,
+(f) put a comment character in the link-local line in the /etc/networks
+[hint: try can use & in your command],
+(g) insert an X column after the first character of each line (an additional
+X character in each line),
+(h) insert an X column after the fifth character of each line,
+(i) repeat the first two letters of each line in a file 3 times,
+(j) change the order of words (i.e. in /etc/aliases change columns, e.g.
+postmaster: root to root: postmaster) [hint: define regions].
+(k) replace letters to encode a file with ROT13 (convert the letters into
+letters that are 13 letters further along in the alphabet, e.g. a → n).
+3. How to imitate (emulate) other commands with sed:
+(a) head
+(b) grep -v, e.g. for the phrase ’lo’? (grep -v lo /etc/networks)
+(c) tr ’a-z’ ’A-Z’, e.g. cat /etc/networks | tr ’a-z’ ’A-Z’
+(d) tail -1
+(e) cut -d: -f2
+(f) * wc -l
+(g) * cat -n
+(h) * tac
+2 AWK
+Check the awk built-in variables and syntax of awk. Then, using awk:
+1. print out a list of user ids and usernames from /etc/passwd, e.g. 0-root,
+2. print out the user id for the particular user (e.g root),
+3. print only lines which contain 100,
+4. print only lines which contain digits,
+5. print line numbers before the content of each line,
+6. print the first 5 lines,
+7. print the last line,
+8. print only line number 80,
+9. print only lines between 80 and 85,
+10. count the number of users (number of lines in /etc/passwd),
+11. count the number of blank lines in a file,
+12. sum up the user ids of all users,
+13. print every line longer than 79 characters,
+
+
+
+
