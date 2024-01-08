@@ -393,4 +393,93 @@ void F00()
 hip 
 progrmmaer should allocate memory and free 
  
+#include <iostream>
+
+void swap(int&a, int &b){
+    int tmp =a;
+    a =b;
+    b =tmp;
+}
+void swapd(double &a, double &b) {
+    double tmp =a;
+    a=b;
+    b= tmp;
+}
+void swapp(int *(&a), int* (&b)) {
+    int *tmp = a;
+    a =b;
+    b =tmp;
+}
+int main(){
+    int a =30; b =20;
+    double da =2.222, db =3.333;
+    int *pa =&a, *pb =&b;
+    swap(a, b);
+    swap(da,db);
+    swapp(pa,pb); //Reference to a Pointer (&a):
+                  //When you see int *(&a) in a function parameter, it means that a is a reference to a pointer.
+                  // This implies that the function can modify the original pointer variable passed to it.
+                  //void modifyPointer(int *(&ptr)) {
+                  // Modifying the original pointer by reference
+                  //ptr = nullptr; // Example modification
+                  std::cout <<"a :" << a << std::endl;
+    std::cout <<"b :" << b << std::endl;
+
+    std::cout <<"da :" << da << std::endl;
+    std::cout <<"db :" << db << std::endl;
+
+    std::cout <<"*pa :" << *pa << std::endl; //20
+    std::cout <<"*pb :" << *pb << std::endl;  //30
+
+}
+
+int inventory[64] = {0};
+int score = 0;
+
+void getitem(int itemId) {
+    inventory[itemId]++;
+}
+
+void getitem(int itemId, int cnt) {
+    inventory[itemId] += cnt; // it is same function name but can be distinguished
+}
+ //default parameter는 오른쪽부터 지정해야 한다
+//Default parameters can only be declared once
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main() {
+    string name;
+    int score;
+    cout << "input name";
+    cin >> name;
+    cout << "input score";
+    cin >> score;
+    cout << name <<"score is" << score <<endl;
+
+}
+
+#include<iostream>
+
+using namespace std;
+
+int main() {
+    int arr[2][3] ={{1, 2, 3}, {4, 5, 6}};
+    for (int(&ln)[3] : arr) {
+        for (int &col: ln) {
+            cout << col << ' ';
+        }
+        cout <<endl;
+    }
+
+    for(int(*ln)[3] = arr; ln <arr +2;ln++) {
+        for(int *c = *ln; c <*ln +3;c++) {
+            cout << *c<< ' ';
+        }
+        cout <<endl;
+    }
+}
+
 
