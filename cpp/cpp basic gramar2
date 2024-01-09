@@ -1,0 +1,247 @@
+// name space
+#include<iostream>
+
+using namespace std;
+int n;
+void set() {
+    ::n =10; //global variable
+}
+namespace doodle {
+    int n;
+    void set() {
+        doodle::n =20; //without using :: , just n means in local variable doodle n
+    }
+}
+
+namespace goodle {
+    int n;
+    void set() {
+        goodle::n =30;
+    }
+}
+
+int main() {
+    ::set();
+    doodle::set();
+    goodle::set();
+
+    cout <<::n <<endl; //10
+    cout <<doodle::n <endl; //20
+    cout <<goodle::n <endl; //30
+}
+
+// Name space nesting (overlap)
+
+include<iostream>
+
+using namespace std;
+int n;
+void set() {
+    ::n =10; //global variable
+}
+namespace doodle {
+    int n;
+    void set() {
+        doodle::n =20; //without using :: , just n means in local variable doodle n
+    }
+
+
+    namespace goodle {
+        int n;
+        void set() {
+            goodle::n =30;
+      }
+    }
+}
+int main() {
+    ::set();  
+    doodle::set();
+    doodle::google::set();
+
+}
+
+/*In C++, function overloading refers to the ability to define multiple functions with the same name but different parameter lists within the same scope 
+(e.g., within the same class or namespace). 
+The key aspect of function overloading is that the functions must differ either in the number or types of their parameters.*/
+
+#include <iostream>
+
+class OverloadingExample {
+public:
+    // Function with one int parameter
+    void printValue(int x) {
+        std::cout << "Printing int: " << x << std::endl;
+    }
+
+    // Function with one double parameter
+    void printValue(double y) {
+        std::cout << "Printing double: " << y << std::endl;
+    }
+
+    // Function with two int parameters
+    void printValues(int a, int b) {
+        std::cout << "Printing two ints: " << a << " and " << b << std::endl;
+    }
+};
+
+int main() {
+    OverloadingExample obj;
+
+    // Call functions based on different parameter lists
+    obj.printValue(42);
+    obj.printValue(3.14);
+    obj.printValues(10, 20);
+
+    return 0;
+}
+/*Function overloading provides a way to create more readable and self-explanatory code by using the same function name for logically related operations.
+ It is commonly used in C++ to handle different types of inputs or perform similar operations on different data types.*/
+
+ 
+//struct 
+// 클래스 =자료저장 +자료 처리 =변수 +함수  
+//클래스 =특정한 용도를 수행하기위해 변수와 함수를 모아 둔 틀 (자료형)
+//object : 틀(클래스)를 이용해 찍어낸 개체
+int a,b,c;
+#inlcude <istream>
+//지시자 private,public , protected      encapsulation(캡슐화)
+using namespace std;
+
+struct TV {
+    bool power On;
+    int channel;
+    int volume;
+
+public:
+void on() {
+    powerOn =true;
+    cout << "tv is on" <<endl;
+}
+void off() {
+    powerOn = false;
+    cout << "tv is off" << endl;
+}
+void setVolume(int vol) {
+    if (vol >= 0 && vol <= 100) {
+        volume = vol;
+    }
+}
+};
+
+int main () {
+    TV lg;
+    lg.on();
+    lg.setVolume(50);
+
+}
+//encapsulation(캡슐화), this pointer
+
+#include <iostream>
+
+using namespace std;
+
+class Myclass {
+    public: 
+        void printThis(){ //every class includes this pointer as a argument
+            cout << "my adress is" << this <<endl;
+        }
+};
+
+int main() {
+    Myclass a,b;
+
+    cout << "adress of a is" << &a << endl;
+    cout << "adress of b is" << &b << endl;
+
+    a.printThis();
+    b.printThis();
+
+}
+
+// constructor distructor
+//constructor:when object is made automatically called function 
+//constructor:it initialize memeber argument
+//disstructor:when object is destroyed automatically called function 
+#include <iostream>
+
+using namespace std;
+
+class Myclass{
+    public:
+        Myclass() { //constructor
+            cout << "constructor is called!" << endl;
+        }
+        ~Myclass() {//distructor
+         cout << "distructor is called!" << endl;
+        }
+};
+
+// Myclass globalobj;
+
+void testLocalObj() {
+    cout << "testLocalObj function is start!" << endl;
+    Myclass localObj;
+    cout << "testLocalObj function is done!" << endl;
+}
+
+
+
+
+int main() {
+    cout << "main function is start!" << endl;
+     testLocalObj();
+    cout << "main function is done!" << endl;
+}
+/*result is "main function is start!"
+            "testLocalObj function is start!"
+            "constructor is called!"
+            "testLocalObj function is done!"
+            "distructor is called!"
+            "main function is done!"   */
+// complex number 
+#include <iostream>
+
+using namespace std;
+class complex {
+    public:
+        complex() {
+            real =0;
+            imag =0;
+        }
+
+        complex(double real, double imag) {
+            real =real_;
+            imag =imag_;
+        }
+
+        double GetReal() {
+            return real;
+        }
+
+        void SetReal(double real_){
+            real =real_;
+        }
+
+        double GetImag() {
+            return imag;
+        }
+
+        void SetImag(double imag_){
+            real =imag_;
+        }
+    private:
+        double real;
+        double imag;
+}
+
+int main() {
+    Complex c1;
+    complex c2 = complex(2, 3);
+    complex c3(2,3);
+    complex c4 ={2, 3}; //initiallization by { } is als opossible !!1 but diffrent with ()
+
+    cout << "c1 =" << c1.GetReal() << ", " << c1.GetImag() << endl;
+    cout << "c2 =" << c2.GetReal() << ", " << c2.GetImag() << endl;
+    cout << "c3 =" << c3.GetReal() << ", " << c3.GetImag() << endl;
+}
+
