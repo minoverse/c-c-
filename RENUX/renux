@@ -992,50 +992,442 @@ Remember to replace /etc/passwd with the actual path to the file you want to pro
 -> sed 's/:/ /g' /etc/passwd
 Global substitution (s/find/replace/g): Replace all occurrences of "find" with "replace" on each line.
 sed 's/find/replace/g' filename
-(b) display only the logins of users saved in the /etc/passwd file,
+(b) display only the logins of users saved in the /etc/passwd file, (deosn't understand)
 ->sed -n 's/\([^:]*\).*/\1/p' /etc/passwd
+
+[^...]: Negated Character Class
+
+When the caret (^) is placed at the beginning of the character class, it negates the class.
+[^aeiou] would match any character that is not a vowel.
 
 (c) replace all root words with your login (the current working login,
 not a string with a login; test your command on /etc/aliases),
-->
+->sed -i 's/\broot\b/'"$USER"'/g' /etc/aliases
+sed: The stream editor command.
+-i: This option tells sed to edit files in place. With -i, sed modifies the file directly instead of printing the modified content to the standard output.
+'s/\broot\b/'"$USER"'/g': This is the substitution command.
+s/: Indicates a substitution.
+\b: Word boundary. Matches the empty string at the beginning or end of a word.
+root: The search pattern. It looks for the exact word "root" (not part of a larger word).
+\b: Word boundary.
+': Delimits the search pattern and the replacement text in sed.
+"$USER": The replacement text. $USER is a shell variable that holds the current user's login name. It's enclosed in double quotes to handle spaces or special characters in the username.
+': Ends the replacement text.
+/g: Global flag. It means replace all occurrences on each line, not just the first occurrence.
+/etc/aliases: The file path. This is the file that sed is going to modify.
 
 (d) replace root with login, but only in lines containing ’www’,
+->sed -i '/www/ s/\broot\b/'"$USER"'/g' /etc/aliases
+sed: The stream editor command.
+
+-i: This option tells sed to edit files in place. With -i, sed modifies the file directly instead of printing the modified content to the standard output.
+
+'/www/: This part specifies a condition for the lines to be processed. It says to perform the substitution only on lines that contain the string "www."
+
+s/\broot\b/'"$USER"'/g': This is the substitution command.
+
+s/: Indicates a substitution.
+\b: Word boundary. Matches the empty string at the beginning or end of a word.
+root: The search pattern. It looks for the exact word "root" (not part of a larger word).
+\b: Word boundary.
+': Delimits the search pattern and the replacement text in sed.
+"$USER": The replacement text. $USER is a shell variable that holds the current user's login name. It's enclosed in double quotes to handle spaces or special characters in the username.
+': Ends the replacement text.
+/g: Global flag. It means replace all occurrences on each line, not just the first occurrence.
+/etc/aliases: The file path. This is the file that sed is going to modify.
+
 (e) replace root with login, but only in lines without ’www’,
+->sed -i '/www/! s/\broot\b/'"$USER"'/g' /etc/aliases
+!: The exclamation mark negates the condition. Therefore, /www/! matches lines that do not contain the string "www."
+
 (f) put a comment character in the link-local line in the /etc/networks
 [hint: try can use & in your command],
+->sed -i '/link-local/ s/^/# &/' /etc/networks
+s/: This indicates a substitution operation in sed.
+^/: The caret (^) is a special character that represents the beginning of a line. So, ^/ specifies the pattern to match the start of a line.
+# &/: This is the replacement pattern. It consists of:
+#: The comment character you want to add.
+&: In the replacement pattern, & represents the entire matched pattern. So, # & means "add a # at the beginning of the line and keep the rest of the line unchanged."
+
+/etc/networks file:
+Purpose: The /etc/networks file is used to define network names and their associated network addresses. It helps in mapping symbolic network names to their numerical representations.
+Content: Each line in the file typically contains a network name followed by one or more IP addresses associated with that network. The entries in this file are used by certain networking utilities and commands to provide human-readable names for networks.
+Format: The general format of a line in /etc/networks is as follows:
+network_name network_address [aliases...]
+network_name: A symbolic name for the network.
+network_address: The numerical representation of the network, usually in CIDR notation.
+aliases: Optional aliases or alternative names for the network.
+Example:
+localnet 192.168.1.0
+link-local 169.254.0.0
+
 (g) insert an X column after the first character of each line (an additional
 X character in each line),
+-> sed -i 's/./&X/' filename
+is designed to insert an "X" character after the first character of each line in a file. Let's break down the command:
+
+-i: This option tells sed to edit files in place. With -i, sed modifies the file directly instead of printing the modified content to the standard output.
+
+s/./&X/: This is the substitution command. It uses the following components:
+
+s/: Indicates a substitution operation in sed.
+.: A period (dot) is a regular expression that matches any single character.
+&: Represents the entire matched pattern. In this case, it's the first character of each line.
+X: The replacement text. It's the character "X" that will be inserted after the first character.
+So, s/./&X/ essentially means "replace the first character of each line with the same character followed by an 'X'."
+
 (h) insert an X column after the fifth character of each line,
+->s/.\{5\}/&X/:
+s/: Indicates a substitution operation in sed.
+.: Represents any single character.
+{5}: Specifies that the preceding character (in this case, .) should appear exactly 5 times.
+&: Represents the entire matched pattern, which, in this case, is the first five characters of each line.
+X: The replacement text. It's the character "X" that will be inserted after the first five characters.
+This command essentially means "replace the first five characters of each line with the same characters followed by an 'X'."
+\{5\}: Specifies a quantifier indicating repetition. In this case, it means the preceding character (which is .) should appear exactly 5 times.
+So, .\{5\} together means "match any five consecutive characters."
+
+sed -i 's/^\(.....\)/\1X/' filename
+Explanation:
+
+s/^\(.....\)/\1X/:
+s/: Indicates a substitution operation in sed.
+^: Anchors the pattern to the beginning of the line.
+\(.....\): Captures the first five characters of each line within parentheses. The \( and \) are used for grouping.
+\1X: Refers to the captured group (the first five characters) and appends an "X" after them.
+
 (i) repeat the first two letters of each line in a file 3 times,
+->sed -i 's/^\(..\)/\1\1\1/' filename
+Explanation:
+s/^\(..\)/\1\1\1/:
+s/: Indicates a substitution operation in sed.
+^: Anchors the pattern to the beginning of the line.
+\(..\): Captures the first two characters of each line within parentheses. The \( and \) are used for grouping.
+\1\1\1: Refers to the captured group (the first two characters) and repeats it three times.
+So, s/^\(..\)/\1\1\1/ essentially means "replace the first two characters at the beginning of each line with those characters repeated three times."
+
 (j) change the order of words (i.e. in /etc/aliases change columns, e.g.
 postmaster: root to root: postmaster) [hint: define regions].
+->
+
 (k) replace letters to encode a file with ROT13 (convert the letters into
 letters that are 13 letters further along in the alphabet, e.g. a → n).
+->
+
 3. How to imitate (emulate) other commands with sed:
 (a) head
+->sed 10q filename
+sed: The stream editor command.
+10q: This is a combination of the address (10) and the q command.
+10: Specifies the line number. In this case, it means the following command applies to lines numbered 1 through 10.
+q: The quit command. It tells sed to exit immediately without processing any more lines.
+
 (b) grep -v, e.g. for the phrase ’lo’? (grep -v lo /etc/networks)
+->sed -n '/lo/!p' filename
+This will emulate grep -v 'lo' by printing lines that do not contain the phrase 'lo'.
+
 (c) tr ’a-z’ ’A-Z’, e.g. cat /etc/networks | tr ’a-z’ ’A-Z’
+->sed 's/[a-z]/\U&/g' /etc/networks
+Explanation:
+s/[a-z]/\U&/g:
+s/: Indicates a substitution operation in sed.
+[a-z]: Defines a character class representing all lowercase letters.
+\U&: Converts the matched pattern to uppercase. \U is an escape sequence that means "uppercase," and & represents the entire matched pattern.
+\L&: Converts the matched pattern to lowercase. \L is an escape sequence that means "lowercase," and & represents the entire matched pattern.
+/g: Global flag, which means replace all occurrences on a line, not just the first one.
+
 (d) tail -1
+->sed -n '$p' filename
+Explanation:
+-n: Suppresses the default behavior of sed to print each line and allows explicit printing using the p command.
+$: Represents the last line of the file.
+p: Prints the pattern space (in this case, the last line).
+So, sed -n '$p' filename will print the last line of the file named filename, effectively emulating the behavior of tail -1.
+
+tail -3 using sed, you can use the following command:
+
+sed -n '$p' filename; sed -n '$-2,$p' filename
+Explanation:
+-n: Suppresses the default behavior of sed to print each line and allows explicit printing using the p command.
+$: Represents the last line of the file.
+$-2: Represents the line number two lines before the last line.
+,: Denotes a range in sed.
+$p: Prints the last line.
+$-2,$p: Prints from the line two lines before the last line to the last line.
+
 (e) cut -d: -f2
-(f) * wc -l
+->sed 's/[^:]*:\([^:]*\).*/\1/' filename
+s/[^:]*:\([^:]*\).*/\1/:
+s/: Indicates a substitution operation in sed.
+[^:]*:: Matches any sequence of characters that are not a colon, followed by a colon.
+\([^:]*\): Captures the second field (between colons) using parentheses. The \( and \) are used for grouping.
+.*: Matches the rest of the line.
+\1: In the replacement part, represents the first captured group, which is the second field.
+So, .* is used to ensure that the entire line beyond the second field is matched but not included in the capture group. This way, the captured group contains only the second field.
+In summary, the s command in sed is used for pattern-based substitution, and it allows you to modify or transform parts of each line based on a specified pattern. In this case, it's used to extract the second field from lines where fields are separated by colons.
+
+(f) * wc -l 
+->sed -n '$=' filename
+sed: Stream editor for filtering and transforming text.
+-n: Suppress automatic printing of pattern space.
+$=: Outputs the line number of the last line in the input.
+$: In the context of sed, this refers to the last line.
+=: When used after $, it indicates that you want to print the line number.
+So, $= together means "print the line number of the last line."
+
 (g) * cat -n
+->sed = filename | sed 'N;s/n/\t/'
+cat -n by printing line numbers alongside the content of each line in the specified file (filename).
+sed = file.txt command:
+sed: This is the stream editor command in Unix/Linux.
+=: This command prints the line number of each line.
+file.txt: This is the input file (replace it with the actual filename).
+So, when you run sed = file.txt, it reads each line from file.txt and prints the line number followed by a newline
+sed 'N;s/\n/\t/': This command reads two lines into the pattern space (the buffer that sed processes), replaces the newline character (\n) between them with a tab character (\t), and prints the result.
+
+N: Appends the next line of input to the pattern space, separated by a newline.
+s/\n/\t/: Substitutes the newline character with a tab.
+After this command, the output becomes:
+
+The sed 'N;N;s/\n/\t/' command processes three lines at a time. Let's break it down:
+
+N: Append the next line of input to the pattern space.
+N: Append another line to the pattern space, so now it contains three lines.
+s/\n/\t/: Substitute the newline character (\n) between the lines with a tab character (\t).
+So, when you apply this sed command to a file with three lines, it will join the lines together with tabs between them. For example, if your file has the following content:
+Line 1
+Line 2
+Line 3
+After running sed 'N;N;s/\n/\t/', the output will be:
+Line 1    Line 2    Line 3
+The three lines are combined into one line, and the newline characters are replaced with tab characters.
+
 (h) * tac
+-> sed '1!G;h;$!d' filename
 2 AWK
 Check the awk built-in variables and syntax of awk. Then, using awk:
-1. print out a list of user ids and usernames from /etc/passwd, e.g. 0-root,
-2. print out the user id for the particular user (e.g root),
-3. print only lines which contain 100,
-4. print only lines which contain digits,
-5. print line numbers before the content of each line,
-6. print the first 5 lines,
-7. print the last line,
-8. print only line number 80,
-9. print only lines between 80 and 85,
-10. count the number of users (number of lines in /etc/passwd),
-11. count the number of blank lines in a file,
-12. sum up the user ids of all users,
-13. print every line longer than 79 characters,
+awk는 기본적으로 입력 데이터를 라인(line) 단위의 레코드(Record)로 인식합니다. 그리고 각 레코드에 들어 있는 텍스트는 공백 문자(space, tab)로 구분된 필드(Field)들로 분류되는데요.
+awk [OPTION...] 'pattern { action }' [ARGUMENT...]
+pattern과 action은 모두 생략이 가능한데, pattern을 생략하는 경우는 "모든 레코드"가 적용되고, action을 생략하면 "print"가 적용됩니다. 즉, 아래와 같이 pattern이 생략되는 경우, 매칭 여부를 검사할 문자열 패턴 정보가 없기 때문에 모든 레코드가 선택되고, action을 생략하면, 기본 액션인 print가 실행되는 것입니다.
+그리고 패턴 중에 "BEGIN" 과 "END" 라고 하는 특별한 패턴이 존재하는데요, awk가 BEGIN 패턴을 식별하면 입력 데이터로부터 첫 번째 레코드를 처리하기 전에 "BEGIN"에 지정된 액션을 실행합니다. 그리고 "END" 패턴은 "BEGIN"과 반대로, 모든 레코드를 처리한 다음 "END"에 지정된 액션을 실행합니다.
 
+1. print out a list of user ids and usernames from /etc/passwd, e.g. 0-root,
+->awk -F: '{print $3 $1}' /etc/passwd
+
+2. print out the user id for the particular user (e.g root),
+-> awk -F: '/root/ {print $3}' /etc/passwd
+
+3. print only lines which contain 100,
+->awk '/100/' /etc/passwd
+
+4. print only lines which contain digits,
+->awk '/[0-9]/' /etc/passwd
+
+5. print line numbers before the content of each line,
+->awk '{print NR, $0}' /etc/passwd
+NR: Built-in variable representing the current record (line) number.
+
+$0: Represents the entire current line.
+
+6. print the first 5 lines,
+->
+awk 'NR<=5' /etc/passwd
+
+7. print the last line,
+->awk 'END {print}' /etc/passwd
+
+8. print only line number 80,->
+awk 'NR==80' /etc/passwd
+
+9. print only lines between 80 and 85,->
+awk 'NR>=80 && NR<=85' /etc/passwd
+
+10. count the number of users (number of lines in /etc/passwd),->
+awk 'END {print NR}' /etc/passwd
+BEGIN: If specified, this block of code is executed before processing any input. It's commonly used for initializing variables or performing setup tasks.
+
+END: If specified, this block of code is executed after all input has been processed. It's commonly used for summarizing or printing final results.
+
+In the provided command, only END is used to print the total number of lines in the file after all lines have been processed. If you had a BEGIN block, it would be executed before processing any lines.
+11. count the number of blank lines in a file,->
+awk '/^$/' /path/to/file | wc -l
+
+12. sum up the user ids of all users,->
+awk -F: '{sum += $3} END {print sum}' /etc/passwd
+
+13. print every line longer than 79 characters,->
+awk 'length($0) > 79' /path/to/file
+
+Lab: AWK scripts (more advanced exercises)
+1. Having a file of the following structure:
+101 102 103
+100 100 100
+999 999 999
+101 100 999
+900 777 100
+• using awk write a script, which calculates and displays the average
+for each line,
+->awk '{ total = 0; for (i = 1; i <= NF; i++) total += $i; average = total / NF; print "Line", NR, "Average:", average }' your_file.txt
+
+NF is a built-in variable that represents the number of fields (columns or words) in the current input record (line)
+NF would be 3 because there are three fields (101, 102, and 103) separated by whitespace.
+So, in the loop, i will take values 1, 2, and 3, and $i refers to the value of the field at position i. In this case, $1 would be 101, $2 would be 102, and $3 would be 103.
+
+• which calculates and displays the average for the whole file.
+->awk 'BEGIN {total = 0; count = 0} { for (i = 1; i <= NF; i++) { total += $i; count++ } } END { average = total / count; print "Whole File Average:", average }' your_file.txt
+
+
+2. Having a file of the following structure (results of Unix tests):
+Abby 22 15
+Alex 19 22
+John 20 25
+Mark 11 10
+• display the file content in the following way:
++----------+
+|Abby|22|15|
+|Alex|19|22|
+|John|20|25|
+|Mark|11|10|
++----------+
+
+->awk 'BEGIN { FS = OFS = "|" } { line = sprintf("%-4s%-2s%-2s", $1, $2, $3); print line }' your_file.txt
+
+BEGIN { FS = OFS = "|" }: This block is executed before processing any lines in the file. It sets both the input field separator (FS) and the output field separator (OFS) to "|". This means that fields in each line will be split based on the "|" character.
+{ line = sprintf("%-4s%-2s%-2s", $1, $2, $3); print line }: This block is executed for each line in the file. It uses sprintf to format the fields ($1, $2, and $3) into a string (line). The %-4s, %-2s, and %-2s format specifiers ensure left alignment and specified width for each field. Finally, it prints the formatted line.
+Here's how the formatting works:
+$1 (first field) is formatted as a string with a width of 4 characters.
+$2 (second field) is formatted as a string with a width of 2 characters.
+$3 (third field) is formatted as a string with a width of 2 characters.
+This command essentially prints each line of the file with the specified formatting using the "|" separator.
+
+• write an awk script, which calculates the sum of points, determines
+the grade, and displays the grade for each person, e.g.
+Grade of Abby is B
+Grade of Alex is B+
+Grade of John is A
+Grade of Mark is D
+->awk 'BEGIN {
+    total = 0;
+    average = 0;
+}
+{
+    total = $2 + $3;  
+    average = total / 2; 
+
+    if (average >= 90) {
+        grade = "A";
+    } else if (average >= 80) {
+        grade = "B";
+    } else if (average >= 70) {
+        grade = "C";
+    } else if (average >= 60) {
+        grade = "D";
+    } else {
+        grade = "F";
+    }
+
+    printf("Grade of %s is %s%s\n", $1, grade, (average % 10 >= 5) ? "+" : "");
+}' your_file.txt
+
+
+
+
+• save the file content to the XML file so it looks in the following way:
+<results>
+<result>
+<name>Abby</name>
+<test1>22</test1>
+<test2>15</test2>
+</result>
+<result>
+<name>Alex</name>
+<test1>19</test1>
+<test2>22</test2>
+</result>
+<result>
+<name>John</name>
+<test1>20</test1>
+<test2>25</test2>
+</result>
+<result>
+<name>Mark</name>
+<test1>11</test1>
+<test2>10</test2>
+</result>
+</results>
+* Having the results of Unix tests in the XML file, try to parse it using
+awk to achieve the source file structure.
+
+Lab9: Bash scripting
+A Bash script is a text file containing executable commands and language
+expressions of Bash. Even a simple sequence of commands, normally executed
+in the shell, becomes a script when written in a file.
+In order for a script to be executed directly by its name, it must be given
+executable permissions (+x). Additionally, because it is read and interpreted
+line by line, it also requires read permissions (+r). The first line of the script
+should have a form: #!/path/interpreter options, which for bash is usually:
+#!/bin/bash.
+1 Basic scripts
+
+1. Create a Bash script that retrieves and displays the current date and
+time, system name, hostname, uptime (duration the system has been running), and the number of currently logged-in users. The script should
+execute these commands in an organized manner, presenting the information clearly and concisely to the user. Ensure that it is executable
+and properly formatted for readability and efficiency. This script aims to
+provide a quick overview of system status and user activity.
+
+2. Create a Bash script that performs and displays a list of currently loggedin users, and a detailed session list for the user executing the script. The
+script should efficiently gather and present this information in a clear
+format. This script aims to provide a quick snapshot of user activity and
+environment specifics for the system administrator or the interested user.
+
+3. Create a Bash script that takes a file path as a parameter from the command line and displays the file’s access permissions. If the owner of the
+file is logged in, the script should provide additional details about the
+owner such as their username, when they logged in, and a brief about
+their current active sessions.
+
+4. Write a bash script that randomly chooses a student present in the class.
+
+2 More advanced bash scripts
+
+1. Write a script that takes two numbers from a user, tells which one is larger,
+and displays their sum. The numbers can also be specified as parameters
+from the command line by calling the script: ./mycalc 11 22
+
+2. Write a script which for each of the files given as arguments will display
+the three most frequently repeated words in it.
+
+3. Write a script that archives (copies to a specific folder and optionally
+zip them) all files in your home (user) directory that have been modified
+within the last 24 hours.
+
+4. Write a script that displays all files from your home directory larger than
+100kB. For each displayed file, the script should ask if a user wants to
+move the file and follow the choice, then go on to the next file. The script
+should write the name and time of moving of moved files to the separate
+log file. ATTENTION: Please first display the commands, so you do not
+remove your files by accident!
+
+5. Write a script that will remind you some of some events of a certain date.
+In the ∼/reminder file, place the dates and content that the script should
+remind you of. The reminder file should have the following syntax: 1 line
+1 reminder, in the format:
+YYYY-MM-DD text to remind
+The script should display reminders for today’s date. How to execute this
+script every time when you log in to the server?
+
+6. Write a script that every 3 seconds will add a single line to the ∼/myps.log
+file containing information about the current date and time, and the load
+average of the system in the following format:
+YYYY-MM-DD HH: MM: SS, n, l1, l5, l15
+where n is the number of processes, l1, l5, l15 is the system load during
+the last 1, 5, 15 minutes, respectively. The name of the file should be in
+the variable, so it was easy to change. After receiving SIGUSR1 signal,
+the script should delete the current contents of the ∼/myps.log file.
+Hint: Some commands which might be useful: date, uptime, sleep, trap.
+Check the trap command to catch a signal:
+trap ’echo -e "Do not do that!"’ SIGINT
+Press Ctrl+C and observe the terminal. To stop this behaviour use:
+trap - SIGINT
 
 
 
