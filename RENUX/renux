@@ -1314,23 +1314,28 @@ Grade of Mark is D
     total = $2 + $3;  
     average = total / 2; 
 
-    if (average >= 90) {
+    if (average >= 20) {
         grade = "A";
-    } else if (average >= 80) {
+    } else if (average >= 17.5 && average < 20) {
+        grade = "B+";
+    } else if (average >= 15 && average < 17.5) {
         grade = "B";
-    } else if (average >= 70) {
+    } else if (average >= 12.5 && average < 15) {
+        grade = "C+";
+    } else if (average >= 10 && average < 12.5) {
         grade = "C";
-    } else if (average >= 60) {
+    } else if (average >= 7.5 && average < 10) {
+        grade = "D+";
+    } else if (average >= 5 && average < 7.5) {
         grade = "D";
     } else {
         grade = "F";
     }
 
-    printf("Grade of %s is %s%s\n", $1, grade, (average % 10 >= 5) ? "+" : "");
+    printf("Grade of %s is %s\n", $1, grade);
 }' your_file.txt
 
-
-
+Indentation is not syntactically important in AWK, but it is crucial for readability and maintaining a clean code structure. Proper indentation helps you and others understand the logical flow of your AWK script. While AWK does not enforce strict indentation rules like some other languages, it's a good practice to maintain a consistent and clear indentation style for better code readability and maintenance.
 
 • save the file content to the XML file so it looks in the following way:
 <results>
@@ -1355,8 +1360,51 @@ Grade of Mark is D
 <test2>10</test2>
 </result>
 </results>
+->
+Save the File Content to an XML File
+
+awk 'BEGIN {
+    print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    print "<results>"
+}
+
+{
+    print "  <result>"
+    print "    <name>" $1 "</name>"
+    print "    <test1>" $2 "</test1>"
+    print "    <test2>" $3 "</test2>"
+    print "  </result>"
+}
+
+END {
+    print "</results>"
+}' input_file.txt > output.xml
+
+
 * Having the results of Unix tests in the XML file, try to parse it using
 awk to achieve the source file structure.
+->
+Parse the XML File to Achieve the Source File Structure
+
+awk -F '[<>]' '
+/\/name/ {name = $3}
+/\/test1/ {test1 = $3}
+/\/test2/ {test2 = $3; print name, test1, test2}
+' output.xml
+-F '[<>]': This option sets the field separator to either < or >, effectively extracting the content between XML tags.
+
+/\/name/ {name = $3}: When a line contains the closing tag </name>, it extracts the content between <name> and </name> (which is the name) and stores it in the variable name.
+
+/\/test1/ {test1 = $3}: Similarly, when a line contains the closing tag </test1>, it extracts the content between <test1> and </test1> (which is test1) and stores it in the variable test1.
+
+/\/test2/ {test2 = $3; print name, test1, test2}: When a line contains the closing tag </test2>, it extracts the content between <test2> and </test2> (which is test2) and stores it in the variable test2. Then, it prints the values of name, test1, and test2.
+$1: (empty string)
+$2: name
+$3: Abby
+$4: /name
+$5: (empty string)
+Essentially, this awk command is processing the XML file and printing the extracted information (name, test1, and test2) for each result.
+
 
 Lab9: Bash scripting
 A Bash script is a text file containing executable commands and language
