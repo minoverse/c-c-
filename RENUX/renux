@@ -1108,11 +1108,26 @@ So, s/^\(..\)/\1\1\1/ essentially means "replace the first two characters at the
 
 (j) change the order of words (i.e. in /etc/aliases change columns, e.g.
 postmaster: root to root: postmaster) [hint: define regions].
-->
+->sed 's/\(.*\): \(.*\)/\2: \1/' /etc/aliases
+sed: Invokes the sed command for text stream editing.
+s/: Indicates a substitution operation.
+\(.*\): \(.*\): Defines two capturing groups separated by a colon. \(.*\) captures any sequence of characters (.*), and the colon is a literal character.
+/: Separates the pattern and replacement parts of the sed command.
+\2: \1: In the replacement part, it rearranges the captured groups. \2 refers to the second capturing group, and \1 refers to the first capturing group. So, it swaps the order of the two captured groups, separated by a colon.
+/etc/aliases: Specifies the input file (in this case, /etc/aliases).
+In summary, this sed command swaps the order of words before and after a colon in each line of the /etc/aliases file. For example, it changes "postmaster: root" to "root: postmaster".
 
 (k) replace letters to encode a file with ROT13 (convert the letters into
 letters that are 13 letters further along in the alphabet, e.g. a → n).
-->
+->sed 'y/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM/' input_file.txt > output_file.txt
+
+The y command in sed is used for character translation or substitution. It allows you to specify a set of characters in the input and their corresponding replacements in the output. The basic syntax is:
+sed 'y/set_of_characters/replacement_characters/'
+Here's a breakdown of each part:
+y: It denotes the translation command.
+set_of_characters: This is the set of characters that you want to replace.
+replacement_characters: These are the corresponding replacement characters.
+In the context of ROT13, which is a simple letter substitution cipher that replaces a letter with the 13th letter after it in the alphabet, you need to list each letter and its replacement. The y command doesn't support character ranges like [a-z] or [A-Z] directly, so you need to list each pair explicitly.
 
 3. How to imitate (emulate) other commands with sed:
 (a) head
