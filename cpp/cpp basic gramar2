@@ -244,4 +244,279 @@ int main() {
     cout << "c2 =" << c2.GetReal() << ", " << c2.GetImag() << endl;
     cout << "c3 =" << c3.GetReal() << ", " << c3.GetImag() << endl;
 }
+//applying in many ways of contributor
+#include <iostream>
 
+using namespace std;
+class complex {
+    public:
+        complex() : real(0), imag(0) {  }
+
+        complex(double real, double imag) : real(real_),  imag(imag_) {
+           
+        }
+
+        double GetReal() { 
+            return real;
+        }
+
+        void SetReal(double real_){
+            real =real_;
+        }
+
+        double GetImag() {
+            return imag;
+        }
+
+        void SetImag(double imag_){
+            real =imag_;
+        }
+    private:
+        double real;
+        double imag;
+}
+
+int main() {
+    Complex c1;
+    complex c2 = complex(2, 3);
+    complex c3(2,3);
+    complex c4 ={2, 3}; //initiallization by { } is als opossible !!1 but diffrent with ()
+
+    cout << "c1 =" << c1.GetReal() << ", " << c1.GetImag() << endl;
+    cout << "c2 =" << c2.GetReal() << ", " << c2.GetImag() << endl;
+    cout << "c3 =" << c3.GetReal() << ", " << c3.GetImag() << endl;
+}
+
+ // h m s
+ #include<iostream>
+
+ using namespace std;
+
+ class Iime {
+    public: Time () : h(0), m(0), s(0)  { }
+            Time (int s_) :time() {
+                s =s_;
+            }
+            Time (int m_, int s_) : Time (int s_) {
+                m = m_;
+             }
+            Time (itn h_, int m_, int s_) {
+                h = h_;
+            }
+    //private: usually it is wrong but just for convinienece this time only
+    int h;
+    int m;
+    int s;
+ }
+
+ int main() {
+    Time t1;
+    Time t2(5);
+    Time t3(3, 16);
+    Time t4(2, 42, 15);
+
+    cout << "t1 :" << t1.h << ":" <<  t1.m << ":" << t1.s << endl; // 0 0 0
+    cout << "t2 :" << t2.h << ":" <<  t2.m << ":" << t2.s << endl; // 0 0 5
+    cout << "t3 :" << t3.h << ":" <<  t3.m << ":" << t3.s << endl; // 0 3 16
+    cout << "t4 :" << t4.h << ":" <<  t4.m << ":" << t4.s << endl; // 2 42 15
+ }
+ 
+// static method  (1 per 1 class)
+include <iostream>
+
+using namespace std;
+
+int idCounter =1;
+
+class color {
+  public: 
+    color : r(0), g(0), b(0), id(idCounter++)//후치 carculation
+     {   }
+    color(float r ,float g, float b): r(r), g(g), b(b) { }
+    float getR() {return r; }
+    float getG() {return g; }
+    float getB() {return b; }
+    
+    int GetId() {return id;}
+
+   static  Color MixColors(color a, color b) {
+       // same as return Color ((a.GetR() + b.GetR()) / 2, (a.GetG() + b.GetG()) / 2, (a.GetB() + b.GetB()) / 2);
+       return Color ((a.r + b.r) / 2, (a.g + b.g) / 2, (a.b + b.b) / 2);
+    static int idCounter;
+
+}
+  private:
+    float r;
+    float g;
+    float b;
+
+    int id;
+};
+
+int Color::idCounter =1;
+
+int main() {
+    Color blue(0, 0, 1);
+    Color red(1, 0, 0);
+    Color purple = Color::MixColors(blue, red);
+
+    cout << "r =" << purple.GetR() << "g =" << purple.GetG() << "B =" <<  purple.GetB() <<endl;
+    cout << "red.GetId() =" << red.GetId() <<endl;
+    cout << "blue.GetId() =" << blue.GetId() <<endl;
+    cout << "purple.GetId() =" << purple.GetId() <<endl;
+}
+
+//parameter constant
+//method constant(member method only)
+
+#include<iostream>
+class Account {
+    public:
+    Account(): money(0){ }
+    Account(int money) : money(money) { }
+
+    void Deposit(const int d){
+        money +=d;
+        cout << d <<"input won" <<endl;
+    }
+    void Draw(const int d){
+        if(money >=d){
+            moeny-=d;
+            cout << d << "withdraw won" <<endl;
+        }
+    }
+    int viewMoney() const {  // 상수형 메서드 
+        return money;
+    }
+    int Get
+    private:int money;
+}
+int main() {
+    Account double(100);
+    doodle.Deposit(100);
+    doodle.Draw(20);
+    cout << doodle.viewMoney() <<endl;
+}
+//distinguish between clarification and definition of member method
+#include <iostream>
+
+using namespace std;
+
+class Vector2 {
+    public:
+        Vector2() : x(0), y(0) { }
+        Vector2()float x, float y : x(x), y(y) { }
+
+        float Getx() const ;
+        float Gety() const ;
+    private:
+        float x;
+        float y;
+};
+Vector2 Sum(Vector2 a, Vector2 b )
+int main () {
+    Vector2 a(2,3);
+    Vector2 b(-1,4);
+
+    cout << a.Getx() << " ," << a.Gety() << endl;
+    cout << b.Getx() << " ," << b.Gety() << endl;
+}
+
+Vector2::Vector2() : x(0), y(0) { }
+Vector2::Vector2(flaot x, float y) : x(x), y(y) { }
+float Vector2::Getx() const {return x;}
+float Vector2::Gety() const {return y;}
+
+#include <iostream>
+
+void swap(int&a, int &b){
+    int tmp =a;
+    a =b;
+    b =tmp;
+}
+void swapd(double &a, double &b) {
+    double tmp =a;
+    a=b;
+    b= tmp;
+}
+void swapp(int *(&a), int* (&b)) {
+    int *tmp = a;
+    a =b;
+    b =tmp;
+}
+int main(){
+    int a =30; b =20;
+    double da =2.222, db =3.333;
+    int *pa =&a, *pb =&b;
+    swap(a, b);
+    swap(da,db);
+    swapp(pa,pb); //Reference to a Pointer (&a):
+                  //When you see int *(&a) in a function parameter, it means that a is a reference to a pointer.
+                  // This implies that the function can modify the original pointer variable passed to it.
+                  //void modifyPointer(int *(&ptr)) {
+                  // Modifying the original pointer by reference
+                  //ptr = nullptr; // Example modification
+                  std::cout <<"a :" << a << std::endl;
+    std::cout <<"b :" << b << std::endl;
+
+    std::cout <<"da :" << da << std::endl;
+    std::cout <<"db :" << db << std::endl;
+
+    std::cout <<"*pa :" << *pa << std::endl; //20
+    std::cout <<"*pb :" << *pb << std::endl;  //30
+
+}
+
+int inventory[64] = {0};
+int score = 0;
+
+void getitem(int itemId) {
+    inventory[itemId]++;
+}
+
+void getitem(int itemId, int cnt) {
+    inventory[itemId] += cnt; // it is same function name but can be distinguished
+}
+ //default parameter는 오른쪽부터 지정해야 한다
+//Default parameters can only be declared once
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main() {
+    string name;
+    int score;
+    cout << "input name";
+    cin >> name;
+    cout << "input score";
+    cin >> score;
+    cout << name <<"score is" << score <<endl;
+
+}
+
+#include<iostream>
+
+using namespace std;
+
+int main() {
+    int arr[2][3] ={{1, 2, 3}, {4, 5, 6}};
+    for (int(&ln)[3] : arr) {
+        for (int &col: ln) {
+            cout << col << ' ';
+        }
+        cout <<endl;
+    }
+
+    for(int(*ln)[3] = arr; ln <arr +2;ln++) {
+        for(int *c = *ln; c <*ln +3;c++) {
+            cout << *c<< ' ';
+        }
+        cout <<endl;
+    }
+}
+
+// name space
+#include<iostream>
+
+using namespace std;
