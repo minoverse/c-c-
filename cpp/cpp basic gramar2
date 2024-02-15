@@ -520,3 +520,138 @@ int main() {
 #include<iostream>
 
 using namespace std;
+//Operator overloading
+#include <iostream>
+
+using namespace std;
+
+class Vector2 {
+    public:
+        Vector2() : x(0), y(0) { }
+        Vector2()float x, float y : x(x), y(y) { }
+    
+   
+    Vector2 operator+(const Vector2 rhs) const; 
+    Vector2 operator-(const Vector2 rhs) const; 
+    Vector2 operator*(const Vector2 rhs) const; 
+    Vector2 operator/(const Vector2 rhs) const; //vector devides by realnumber is ok but vevtor devies by vector  impossible!!
+    float operator*(const Vector2 rhs) const; 
+        float Getx() const ;
+        float Gety() const ;
+    private:
+        float x;
+        float y;
+};
+
+  Vector2 Sum(Vector2 a, Vector2 b ) {
+    return Vector2(a.Getx() + b.Getx(), a.Gety() + b.Gety());
+    }
+
+int main () {
+    Vector2 a(2,3);
+    Vector2 b(-1,4);
+    Vecotr2 c1 = Sum(a, b);
+    Vecotr2 c2 = a.operator+(b);
+    Vecotr2 c3 = a + b;
+    float c4 = a *b;
+    cout << a.Getx() << " ," << a.Gety() << endl;
+    cout << b.Getx() << " ," << b.Gety() << endl;
+    cout << c1.Getx() << " ," << c1.Gety() << endl;
+    cout << c2.Getx() << " ," << c2.Gety() << endl;
+    cout << c3.Getx() << " ," << c3.Gety() << endl;
+    cout <<c4 << endl;
+}
+
+Vector2::Vector2() : x(0), y(0) { }
+Vector2::Vector2(flaot x, float y) : x(x), y(y) { }
+float Vector2::Getx() const {return x;}
+float Vector2::Gety() const {return y;}
+
+Vector2 Vector2 ::operator+(const Vector2 rhs) const {
+        return Vctor2(x +rhs.x, y +rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+Vector2 Vector2 :: operator-(const Vector2 rhs) const {
+        return Vctor2(x - rhs.x, y - rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+Vector2 Vector2 :: operator*(const float rhs) const {
+        return Vctor2(x * rhs.x, y * rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+Vector2 Vector2 :: operator/(const float rhs) const {
+        return Vctor2(x / rhs.x, y / rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+float Vector2 :: operator*(const Vector2 rhs) const {
+        return x *rhs.x + y *rhs.y; //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+
+
+#include <iostream>
+
+using namespace std;
+
+class Vector2 {
+    public:
+        Vector2() : x(0), y(0) { }
+        Vector2()float x, float y : x(x), y(y) { }
+    
+   
+    Vector2 operator+(const Vector2 rhs) const; 
+    Vector2 operator-(const Vector2 rhs) const; 
+    Vector2 operator*(const Vector2 rhs) const; 
+    Vector2 operator/(const Vector2 rhs) const; //vector devides by realnumber is ok but vevtor devies by vector  impossible!!
+    float operator*(const Vector2 rhs) const; 
+        float Getx() const ;
+        float Gety() const ;
+    private:
+        float x;
+        float y;
+};
+
+  Vector2 operator*(float a, Vector2 b ) {
+    return Vector2(a *b.Getx(), a *b.Gety());
+    }
+
+int main () {
+    Vector2 a(2,3);
+    Vector2 b(-1,4);
+    Vecotr2 c1 = Sum(a, b);
+    Vecotr2 c2 = a * 1.6;
+    Vecotr2 c3 = a + b;
+    float c4 = a *b;
+    cout << a.Getx() << " ," << a.Gety() << endl;
+    cout << b.Getx() << " ," << b.Gety() << endl;
+    cout << c1.Getx() << " ," << c1.Gety() << endl;
+    cout << c2.Getx() << " ," << c2.Gety() << endl;
+    cout << c3.Getx() << " ," << c3.Gety() << endl;
+    cout <<c4 << endl;
+}
+
+Vector2::Vector2() : x(0), y(0) { }
+Vector2::Vector2(flaot x, float y) : x(x), y(y) { }
+float Vector2::Getx() const {return x;}
+float Vector2::Gety() const {return y;}
+
+Vector2 Vector2 ::operator+(const Vector2 rhs) const {
+        return Vctor2(x +rhs.x, y +rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+Vector2 Vector2 :: operator-(const Vector2 rhs) const {
+        return Vctor2(x - rhs.x, y - rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+Vector2 Vector2 :: operator*(const float rhs) const {
+        return Vctor2(x * rhs.x, y * rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+Vector2 Vector2 :: operator/(const float rhs) const {
+        return Vctor2(x / rhs.x, y / rhs.y); //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
+float Vector2 :: operator*(const Vector2 rhs) const {
+        return x *rhs.x + y *rhs.y; //rhs is right hand side shorten it add iteslf (a) + b
+    }
+
