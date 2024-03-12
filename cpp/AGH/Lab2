@@ -1,0 +1,64 @@
+//User
+//1.load function f(x) = ax^3 + bx^2 +cx +d function (From c in or file)  2.check how many real roots of f(x) = 0  are there 3. Load range from x between (x1, x2) within which you will search for zero 4.final roots with "real roots" 
+
+
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+double a, b, c, d;
+
+double f(double x) {  //1.load function f(x) = ax^3 + bx^2 +cx +d function (From c in or file)
+    return a * pow(x, 3) + b * pow(x, 2) + c * x + d;
+}
+
+int rootcnt() { //2.check how many real roots of f(x) = 0  are there
+    if (4 * b * b - 12 * a * c > 0) {
+        double ext1 = (-4) * b + sqrt(4 * b * b - 12 * a * c);
+        double ext2 = (-4) * b - sqrt(4 * b * b - 12 * a * c);
+
+        if (f(ext1) * f(ext2) < 0) {
+            return 3;
+        } else if (f(ext1) * f(ext2) == 0) {
+            return 2;
+        } else {
+            return 1;
+        }
+    } else {
+        return 1;
+    }
+}
+
+double findroots(double x1, double x2) {  
+    double epsilon = 0.00001; // Small epsilon 
+    while (fabs(x2 - x1) > epsilon) {
+        double mid = (x1 + x2) / 2;
+        if (f(x1) * f(mid) < 0) {
+            x2 = mid;
+        } else if (f(x1) * f(mid) > 0) {
+            x1 = mid;
+        } else {
+            return mid;
+        }
+    }
+    return (x1 + x2) / 2;
+}
+
+int main() {
+    cout << "Input a, b, c, d" << endl;
+    cin >> a >> b >> c >> d;
+
+    int rootnum = rootcnt();
+    cout << "Real root number is: " << rootnum << endl;
+
+    cout << "To set range(X1,x2), input x1, x2 values" << endl; // //3. Load range from x between (x1, x2) within which you will search for zero
+    double x1, x2;
+    cin >> x1 >> x2;
+
+    double realroot = findroots(x1, x2); //4.final roots with "real roots" give cpp code
+
+    cout << "The real root is: " << realroot << endl;
+
+    return 0;
+}
